@@ -3,180 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Carbon Consumption or Generation Calculator</title>
+    <title>Daily Carbon Generation Calculator</title>
     <style>
+        /* General Styles */
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
         }
-
         header {
             background-color: #0b9e3a;
             color: white;
             padding: 1em 0;
             text-align: center;
-            position: relative;
+            overflow: hidden;
+            white-space: nowrap;
         }
-
-        header h1 {
-            font-size: 2.5em;
-            margin: 0;
-            animation: fadeInDown 1s forwards;
-        }
-
         nav {
             display: flex;
             justify-content: center;
             background-color: #333;
-            padding: 1em 0;
+            margin-bottom: 20px; /* Adjust margin for spacing */
         }
-
         nav a {
             color: white;
             padding: 14px 20px;
             text-decoration: none;
             text-align: center;
-            transition: background-color 0.3s, color 0.3s;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
-
         nav a:hover {
             background-color: #ddd;
             color: black;
         }
-
         main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             padding: 2em;
-            text-align: center;
-        }
-
-        form {
             background-color: #fff;
-            padding: 2em;
-            margin: 2em auto;
+            margin-bottom: 60px; /* Adjust margin for footer */
+        }
+        .content {
+            width: 100%;
             max-width: 600px;
+            padding: 2em;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            animation: fadeInUp 1s forwards;
+            animation: fadeIn 2s;
         }
-
-        label {
+        .content label {
             display: block;
             margin-bottom: 0.5em;
             font-weight: bold;
         }
-
-        input, select {
+        .content select, .content input {
             width: 100%;
             padding: 0.5em;
             margin-bottom: 1em;
-            border: 1px solid #ddd;
+            border: 1px solid #ccc;
             border-radius: 4px;
-            box-sizing: border-box;
+            font-size: 1em;
         }
-
-        button {
+        .content button {
+            display: block;
+            width: 100%;
+            padding: 1em;
             background-color: #0b9e3a;
             color: white;
-            padding: 1em 2em;
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 1em;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s ease;
         }
-
-        button:hover {
-            background-color: #098330;
+        .content button:hover {
+            background-color: #088531;
         }
-
         .result {
-            margin-top: 2em;
-            font-size: 1.2em;
+            margin-top: 1em;
+            padding: 1em;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-
         footer {
             background-color: #0b9e3a;
             color: white;
             text-align: center;
             padding: 1em 0;
-            position: absolute;
-            bottom: 0;
+            position: fixed;
             width: 100%;
+            bottom: 0;
         }
-
-        .content {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 1s forwards;
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            margin: 1em;
         }
-
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .hamburger div {
+            width: 25px;
+            height: 3px;
+            background-color: black;
+            margin: 4px 0;
         }
- @media (max-width: 768px) {
+        @media (max-width: 576px) {
             .hamburger {
                 display: flex;
             }
+            .hamburger.active div:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 6px);
+            }
+            .hamburger.active div:nth-child(2) {
+                opacity: 0;
+            }
+            .hamburger.active div:nth-child(3) {
+                transform: rotate(-45deg) translate(5px, -6px);
+            }
             nav {
-                display: none;
                 flex-direction: column;
-                background-color: #333;
+                display: none;
                 position: absolute;
-                top: 70px; /* Adjust top position based on header height */
-                width: 100%;
-                z-index: 1;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background-color: #333;
+                z-index: 1000;
             }
             nav.active {
                 display: flex;
             }
-            nav a {
-                color: white;
-                padding: 14px 20px;
-                text-decoration: none;
+            nav.active a {
+                width: 100%;
                 text-align: center;
-                transition: background-color 0.3s ease, color 0.3s ease;
             }
-            nav a:hover {
-                background-color: #ddd;
-                color: black;
-            }
-        
-            main {
-                flex-direction: column; /* Stack items vertically */
-                align-items: center; /* Center items horizontally */
-            }
-        
-            .content {
-                max-width: 100%; /* Take full width of the screen */
-            }
-        
-            .image {
-                width: 100%;
-            }
-        
-            .image img {
-                width: 100%;
-                height: auto;
+            main .content {
+                padding: 1em; /* Adjust padding for mobile */
             }
         }
     </style>
@@ -184,12 +153,13 @@
 <body>
     <header>
         <h1>Daily Carbon Generation Calculator</h1>
-    </header>
- <div class="hamburger" onclick="toggleNav()">
+        <div class="hamburger" onclick="toggleNav()">
             <div></div>
             <div></div>
             <div></div>
         </div>
+    </header>
+    
     <nav>
         <a href="index.html">Home</a>
         <a href="climate_change.html">Climate Change</a>
@@ -200,8 +170,9 @@
         <a href="climateSurvey.html">Survey</a>
         <a href="calculator.html">Calculator</a>
     </nav>
+
     <main>
-        <form id="carbonForm" class="content">
+        <div id="carbonForm" class="content">
             <label for="type">Calculation Type:</label>
             <select id="type" name="type" onchange="toggleInputs()" required>
                 <option value="vehicle">Vehicle Consumption</option>
@@ -242,10 +213,11 @@
             </div>
 
             <button type="button" onclick="calculateCarbon()">Calculate</button>
-        </form>
+        </div>
         <div class="result" id="result"></div>
         <div class="result" id="savings"></div>
     </main>
+    
     <footer>
         &copy; 2024 Environmental and Sustainability. All rights reserved.
     </footer>
@@ -327,13 +299,12 @@
                 document.getElementById('savings').innerHTML = '';
             }
         }
-    </script>
-<script>
+
         function toggleNav() {
             const nav = document.querySelector('nav');
             const hamburger = document.querySelector('.hamburger');
             hamburger.classList.toggle('active');
-            nav.classList.toggle('active');
+            nav.classList.toggle('active'); // Toggle the active class on nav
         }
     </script>
 </body>
