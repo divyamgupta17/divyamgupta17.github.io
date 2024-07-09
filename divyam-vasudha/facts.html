@@ -38,6 +38,7 @@
         }
         main {
             display: flex;
+            flex-wrap: wrap; /* Allow content to wrap on smaller screens */
             justify-content: space-between;
             padding: 2em;
         }
@@ -47,23 +48,28 @@
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            overflow-y: auto; /* Enable vertical scrolling for content */
-            max-height: calc(100vh - 140px); /* Adjust max-height based on footer and header heights */
             margin: 0 10px;
             text-align: center; /* Center the image and text */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
         .content h2 {
             color: #4CAF50; /* Green color */
             border-bottom: 2px solid #4CAF50; /* Green border bottom */
             padding-bottom: 0.5em;
+            width: 100%; /* Make header width 100% to align with the content */
         }
         .content p {
             line-height: 1.6;
             margin-bottom: 1em;
+            width: 100%; /* Make paragraph width 100% to align with the content */
+            text-align: justify; /* Justify text for equal alignment */
         }
         .content img {
-            width: 300px; /* Set fixed width */
-            height: 200px; /* Set fixed height */
+            max-width: 100%; /* Make images responsive */
+            height: auto; /* Maintain aspect ratio */
             border: 2px solid #ddd; /* Border for images */
             border-radius: 8px; /* Rounded corners */
             margin-bottom: 1em; /* Space below images */
@@ -99,12 +105,74 @@
             background-color: #45a049;
             transform: translateY(-3px);
         }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            margin: 1em;
+        }
+        .hamburger div {
+            width: 25px;
+            height: 3px;
+            background-color: black;
+            margin: 4px 0;
+        }
+        @media (max-width: 576px) {
+            .hamburger {
+                display: flex;
+            }
+            .hamburger.active div:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 6px);
+            }
+            .hamburger.active div:nth-child(2) {
+                opacity: 0;
+            }
+            .hamburger.active div:nth-child(3) {
+                transform: rotate(-45deg) translate(5px, -6px);
+            }
+            nav {
+                flex-direction: column;
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background-color: #333;
+                z-index: 1000;
+            }
+            nav.active {
+                display: flex;
+            }
+            nav.active a {
+                width: 100%;
+                text-align: center;
+            }
+            main {
+                padding: 1em; /* Adjust padding for smaller screens */
+            }
+            main .content {
+                flex: 1 1 100%; /* Make content blocks full-width */
+                margin-bottom: 1em; /* Space between content blocks */
+            }
+        }
+        @media (min-width: 577px) {
+            .content img {
+                width: 300px; /* Set fixed width for desktop */
+                height: 200px; /* Set fixed height for desktop */
+            }
+        }
     </style>
 </head>
 <body>
     <header>
         <h1>IMPACT OF CLIMATE CHANGE</h1>
     </header>
+    <div class="hamburger" onclick="toggleNav()">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+
     <nav>
         <a href="index.html">Home</a>
         <a href="climate_change.html">Climate Change</a>
@@ -114,7 +182,6 @@
         <a href="facts.html">Facts</a>
         <a href="climateSurvey.html">Survey</a>
         <a href="calculator.html">Calculator</a>
-
     </nav>
 
     <main>
@@ -132,5 +199,14 @@
     <footer>
         &copy; 2024 Environmental and Sustainability. All rights reserved.
     </footer>
+
+    <script>
+        function toggleNav() {
+            const nav = document.querySelector('nav');
+            const hamburger = document.querySelector('.hamburger');
+            hamburger.classList.toggle('active');
+            nav.classList.toggle('active');
+        }
+    </script>
 </body>
 </html>

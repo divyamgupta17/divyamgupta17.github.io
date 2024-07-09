@@ -12,15 +12,13 @@
             background-color: #f4f4f4;
         }
         header {
-            background-color: #0b9e3a; /* Green background color */
+            background-color: #0b9e3a;
             color: white;
             padding: 1em 0;
             text-align: center;
             overflow: hidden;
             white-space: nowrap;
         }
-        
-
         nav {
             display: flex;
             justify-content: center;
@@ -39,41 +37,41 @@
         }
         main {
             display: flex;
-            flex-wrap: wrap; /* Allow items to wrap */
-            justify-content: space-around; /* Center items horizontally */
+            flex-wrap: wrap;
+            justify-content: space-around;
             padding: 2em;
-            background-color: #fff; /* White background color */
+            background-color: #fff;
         }
         main .content {
-            flex-basis: calc(50% - 2em); /* Take up 50% of the width minus padding */
+            flex-basis: calc(50% - 2em);
             padding: 0 1em;
             line-height: 1.6;
             margin-bottom: 20px;
             display: flex;
-            justify-content: space-between; /* Space items evenly between */
-            align-items: center; /* Center align items vertically */
-            background-color: #f9f9f9; /* Light gray background color */
-            border-radius: 8px; /* Rounded corners */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow */
-            animation: fadeIn 2s; /* Apply fade-in animation */
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 2s;
         }
         main .content img {
-            width: 200px; /* Fixed width */
-            height: 150px; /* Fixed height */
-            object-fit: cover; /* Ensure image covers the area */
-            border: 2px solid #0b9e3a; /* Green border */
-            border-radius: 8px; /* Rounded corners for image */
-            margin: 0 1em; /* Margin around image */
+            width: 200px;
+            height: 150px;
+            object-fit: cover;
+            border: 2px solid #0b9e3a;
+            border-radius: 8px;
+            margin: 0 1em;
         }
         main .content p {
-            flex-basis: 50%; /* Paragraph takes up 50% of the width */
-            padding: 0 1em; /* Padding for paragraphs */
+            flex-basis: 50%;
+            padding: 0 1em;
         }
         main .content:nth-child(even) .image {
-            order: -1; /* Reverse order for even numbered content */
+            order: 1; /* Changed order for even numbered content */
         }
         footer {
-            background-color: #0b9e3a; /* Green background color */
+            background-color: #0b9e3a;
             color: white;
             text-align: center;
             padding: 1em 0;
@@ -81,40 +79,59 @@
             width: 100%;
             bottom: 0;
         }
-
-        /* Keyframe animations */
-        @keyframes marquee {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
-
-        /* Back to Top Button */
-        .back-to-top {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 20px;
+        .hamburger {
+            display: none;
+            flex-direction: column;
             cursor: pointer;
-            display: none; /* Initially hidden */
-            border-radius: 50%;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            transition: background-color 0.3s ease, transform 0.3s ease;
-            font-size: 16px;
-            line-height: 1;
-            outline: none;
+            margin: 1em;
         }
-
-        .back-to-top:hover {
-            background-color: #45a049;
-            transform: translateY(-3px);
+        .hamburger div {
+            width: 25px;
+            height: 3px;
+            background-color: black;
+            margin: 4px 0;
+        }
+        @media (max-width: 576px) {
+            .hamburger {
+                display: flex;
+            }
+            .hamburger.active div:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 6px);
+            }
+            .hamburger.active div:nth-child(2) {
+                opacity: 0;
+            }
+            .hamburger.active div:nth-child(3) {
+                transform: rotate(-45deg) translate(5px, -6px);
+            }
+            nav {
+                flex-direction: column;
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background-color: #333;
+                z-index: 1000;
+            }
+            nav.active {
+                display: flex;
+            }
+            nav.active a {
+                width: 100%;
+                text-align: center;
+            }
+            main .content {
+                flex-direction: column-reverse; /* Change flex direction for mobile */
+                text-align: center; /* Center-align content */
+            }
+            main .content img {
+                margin: 1em 0; /* Adjust margin for image */
+            }
         }
     </style>
 </head>
@@ -122,6 +139,12 @@
     <header>
         <h1>ABOUT CLIMATE CHANGE</h1>
     </header>
+    <div class="hamburger" onclick="toggleNav()">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+
     <nav>
         <a href="index.html">Home</a>
         <a href="climate_change.html">Climate Change</a>
@@ -131,7 +154,6 @@
         <a href="facts.html">Facts</a>
         <a href="climateSurvey.html">Survey</a>
         <a href="calculator.html">Calculator</a>
-
     </nav>
     <main>
         <div class="content">
@@ -139,16 +161,16 @@
             <img class="image" src="cc2.jpg" alt="Earth Image">
         </div>
         <div class="content">
-            <img class="image" src="cc8.jpg" alt="Ocean Image">
             <p>The impacts of climate change are diverse and far-reaching. Rising global temperatures result in more frequent and intense heatwaves, exacerbating heat-related illnesses and stressing vulnerable populations. Melting polar ice caps and glaciers contribute to rising sea levels, threatening low-lying coastal areas with increased flooding and erosion.</p>
+            <img class="image" src="cc8.jpg" alt="Ocean Image">
         </div>
         <div class="content">
             <p>Changes in weather patterns lead to more extreme events such as hurricanes, droughts, and heavy rainfall, affecting agriculture, water resources, and infrastructure. Coastal communities are particularly at risk from storm surges and sea-level rise.</p>
             <img class="image" src="cc4.jpg" alt="Forest Image">
         </div>
         <div class="content">
-            <img class="image" src="cc6.jpg" alt="Wildlife Image">
             <p>Biodiversity faces significant threats as ecosystems struggle to adapt to changing conditions. Species migration and extinction rates accelerate as habitats shift and become less suitable for many organisms.</p>
+            <img class="image" src="cc6.jpg" alt="Wildlife Image">
         </div>
     </main>
     <footer>
@@ -176,6 +198,14 @@
                 backToTopBtn.style.display = 'none';
             }
         });
+
+        // Hamburger Menu Toggle Function
+        function toggleNav() {
+            const nav = document.querySelector('nav');
+            const hamburger = document.querySelector('.hamburger');
+            hamburger.classList.toggle('active');
+            nav.classList.toggle('active');
+        }
     </script>
 </body>
 </html>

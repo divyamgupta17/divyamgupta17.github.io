@@ -10,6 +10,7 @@
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
+            text-align: justify;
         }
         header {
             background-color: #0b9e3a; /* Green background color */
@@ -23,6 +24,7 @@
             justify-content: center;
             background-color: #333;
             animation: fadeIn 1s ease; /* Animation for navigation */
+            flex-wrap: wrap; /* Wrap the nav items */
         }
         nav a {
             color: white;
@@ -49,6 +51,7 @@
         main .content {
             display: flex;
             margin-bottom: 2em; /* Space between each content block */
+            align-items: center; /* Center align items vertically */
         }
         main .content img {
             width: 200px; /* Fixed width for images */
@@ -57,6 +60,7 @@
             border: 2px solid #0b9e3a; /* Green border */
             border-radius: 8px; /* Rounded corners */
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow */
+            margin-right: 1em; /* Space between image and text */
         }
         main .content .text {
             flex: 1;
@@ -90,13 +94,89 @@
             from { transform: scale(0.8); }
             to { transform: scale(1); }
         }
+
+        /* Media Queries for Responsive Design */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            margin: 1em;
+        }
+        .hamburger div {
+            width: 25px;
+            height: 3px;
+            background-color: black;
+            margin: 4px 0;
+        }
+        @media (max-width: 576px) {
+            .hamburger {
+                display: flex;
+            }
+            .hamburger.active div:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 6px);
+            }
+            .hamburger.active div:nth-child(2) {
+                opacity: 0;
+            }
+            .hamburger.active div:nth-child(3) {
+                transform: rotate(-45deg) translate(5px, -6px);
+            }
+            nav {
+                flex-direction: column;
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background-color: #333;
+                z-index: 1000;
+            }
+            nav.active {
+                display: flex;
+            }
+            nav.active a {
+                width: 100%;
+                text-align: center;
+            }
+            main .content {
+                flex-direction: column-reverse; /* Change flex direction for mobile */
+                text-align: center; /* Center-align content */
+            }
+            main .content img {
+                margin: 0 auto 1em; /* Center-align image */
+                display: block; /* Ensure block display for margin to work */
+            }
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #0b9e3a;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            animation: fadeIn 1s ease; /* Animation for button */
+        }
+        .back-to-top:hover {
+            background-color: #066925;
+        }
     </style>
 </head>
 <body>
     <header>
         <h1>CAUSES OF CLIMATE CHANGE</h1>
     </header>
-    <nav>
+    <div class="hamburger" onclick="toggleNav()">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    <nav id="nav">
         <a href="index.html">Home</a>
         <a href="climate_change.html">Climate Change</a>
         <a href="causes.html">Causes</a>
@@ -171,6 +251,16 @@
                 backToTopBtn.style.display = 'none';
             }
         });
+
+        // Toggle Navigation Function
+        function toggleNav() {
+            const nav = document.getElementById('nav');
+            if (nav.style.display === 'flex') {
+                nav.style.display = 'none';
+            } else {
+                nav.style.display = 'flex';
+            }
+        }
     </script>
 </body>
 </html>

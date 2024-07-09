@@ -109,12 +109,69 @@
             from { transform: translateY(-50px); }
             to { transform: translateY(0); }
         }
+ .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            margin: 1em;
+        }
+        .hamburger div {
+            width: 25px;
+            height: 3px;
+            background-color: black;
+            margin: 4px 0;
+        }
+        @media (max-width: 576px) {
+            .hamburger {
+                display: flex;
+            }
+            .hamburger.active div:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 6px);
+            }
+            .hamburger.active div:nth-child(2) {
+                opacity: 0;
+            }
+            .hamburger.active div:nth-child(3) {
+                transform: rotate(-45deg) translate(5px, -6px);
+            }
+            nav {
+                flex-direction: column;
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background-color: #333;
+                z-index: 1000;
+            }
+            nav.active {
+                display: flex;
+            }
+            nav.active a {
+                width: 100%;
+                text-align: center;
+            }
+            main .content {
+                flex-direction: column-reverse; /* Change flex direction for mobile */
+                text-align: center; /* Center-align content */
+            }
+            main .content img {
+                margin: 1em 0; /* Adjust margin for image */
+            }
+        }
+
     </style>
 </head>
 <body>
     <header>
         <h1>SOLUTION TO SAVE ENVIRONMENT</h1>
     </header>
+ <div class="hamburger" onclick="toggleNav()">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+
     <nav>
           <a href="index.html">Home</a>
         <a href="climate_change.html">Climate Change</a>
@@ -176,5 +233,14 @@
     <footer>
         &copy; 2024 Environmental and Sustainability. All rights reserved.
     </footer>
+<script>
+ function toggleNav() {
+            const nav = document.querySelector('nav');
+            const hamburger = document.querySelector('.hamburger');
+            hamburger.classList.toggle('active');
+            nav.classList.toggle('active');
+        }
+    </script>
+
 </body>
 </html>
