@@ -177,7 +177,7 @@
             <select id="type" name="type" onchange="toggleInputs()" required>
                 <option value="vehicle">Vehicle Consumption</option>
                 <option value="waste">Waste Consumption</option>
-                <option value="generation">Carbon Generation</option>
+                <option value="planting">Tree Planting</option>
             </select>
 
             <div id="vehicleInputs">
@@ -200,16 +200,12 @@
                 <input type="number" id="wasteAmount" name="wasteAmount">
             </div>
 
-            <div id="generationInputs" style="display:none;">
-                <label for="activity">Activity:</label>
-                <select id="activity" name="activity">
-                    <option value="solar">Solar Power Generation</option>
-                    <option value="wind">Wind Power Generation</option>
-                    <option value="hydro">Hydro Power Generation</option>
-                </select>
-
-                <label for="energyProduced">Energy Produced (kWh per day):</label>
-                <input type="number" id="energyProduced" name="energyProduced">
+            <div id="plantingInputs" style="display:none;">
+                <label for="treesPlanted">Number of Trees Planted:</label>
+                <input type="number" id="treesPlanted" name="treesPlanted">
+                
+                <label for="co2Absorption">Average CO2 Absorption per Tree (kg per year):</label>
+                <input type="number" id="co2Absorption" name="co2Absorption" value="21">
             </div>
 
             <button type="button" onclick="calculateCarbon()">Calculate</button>
@@ -227,7 +223,7 @@
             const type = document.getElementById('type').value;
             document.getElementById('vehicleInputs').style.display = type === 'vehicle' ? 'block' : 'none';
             document.getElementById('wasteInputs').style.display = type === 'waste' ? 'block' : 'none';
-            document.getElementById('generationInputs').style.display = type === 'generation' ? 'block' : 'none';
+            document.getElementById('plantingInputs').style.display = type === 'planting' ? 'block' : 'none';
 
             clearInputs();
         }
@@ -237,8 +233,8 @@
             document.getElementById('fuel').value = '';
             document.getElementById('fuelType').value = 'petrol';
             document.getElementById('wasteAmount').value = '';
-            document.getElementById('energyProduced').value = '';
-            document.getElementById('activity').value = 'solar';
+            document.getElementById('treesPlanted').value = '';
+            document.getElementById('co2Absorption').value = '21';
         }
 
         function calculateCarbon() {
@@ -283,19 +279,13 @@
                 document.getElementById('result').innerHTML = `Your daily waste CO2 emissions generated is approximately <strong>${totalCarbon.toFixed(2)} kg CO2</strong>.`;
                 document.getElementById('savings').innerHTML = '';
 
-            } else if (type === 'generation') {
-                const energyProduced = parseFloat(document.getElementById('energyProduced').value);
-                const activity = document.getElementById('activity').value;
+            } else if (type === 'planting') {
+                const treesPlanted = parseFloat(document.getElementById('treesPlanted').value);
+                const co2Absorption = parseFloat(document.getElementById('co2Absorption').value);
 
-                const generationFactors = {
-                    solar: -0.85,
-                    wind: -0.5,
-                    hydro: -0.25
-                };
+                totalCarbon = treesPlanted * (co2Absorption / 365);
 
-                totalCarbon = energyProduced * generationFactors[activity];
-
-                document.getElementById('result').innerHTML = `Your daily carbon generation reduction from ${activity} power generation is approximately <strong>${Math.abs(totalCarbon).toFixed(2)} kg CO2</strong>.`;
+                document.getElementById('result').innerHTML = `Your daily CO2 absorption from planting trees is approximately <strong>${totalCarbon.toFixed(2)} kg CO2</strong>.`;
                 document.getElementById('savings').innerHTML = '';
             }
         }
