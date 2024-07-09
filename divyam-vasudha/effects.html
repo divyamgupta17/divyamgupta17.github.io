@@ -12,14 +12,15 @@
             background-color: #f4f4f4;
             overflow-x: hidden; /* Hide horizontal scrollbar */
         }
-        header {
-            background-color: #0b9e3a; /* Green background color */
+          header {
+            background-color: #0b9e3a;
             color: white;
             padding: 1em 0;
             text-align: center;
             overflow: hidden;
             white-space: nowrap;
         }
+
         
         .hamburger {
             display: none;
@@ -49,38 +50,17 @@
         }
         
        nav {
-            display: none; /* Initially hidden */
+            display: flex;
             justify-content: center;
             background-color: #333;
-            position: absolute;
-            top: 70px; /* Adjust top position based on header height */
-            width: 100%;
-            z-index: 1;
-            flex-direction: row; /* Display links in a row */
-            white-space: nowrap; /* Prevent wrapping of links */
         }
-        
-        @media (min-width: 769px) {
-            nav {
-                display: flex;
-            }
-            
-            nav.active {
-                display: flex; /* Display when active */
-            }
-        }
-        
         nav a {
             color: white;
             padding: 14px 20px;
             text-decoration: none;
             text-align: center;
             transition: background-color 0.3s ease, color 0.3s ease;
-            flex: 1 1 auto; /* Flex properties to distribute evenly */
-            max-width: 200px; /* Limit maximum width of each link */
-            box-sizing: border-box; /* Ensure padding is included in width */
         }
-        
         nav a:hover {
             background-color: #ddd;
             color: black;
@@ -212,11 +192,20 @@
             .hamburger.active div:nth-child(3) {
                 transform: rotate(-45deg) translate(5px, -6px);
             }
+            nav {
+                flex-direction: column;
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background-color: #333;
+                z-index: 1000;
+            }
             nav.active {
                 display: flex;
-                flex-direction: column;
             }
-            nav a {
+            nav.active a {
                 width: 100%;
                 text-align: center;
             }
@@ -227,6 +216,10 @@
             main .content img {
                 margin: 0 auto 1em; /* Center-align image */
                 display: block; /* Ensure block display for margin to work */
+            }
+            .effect-section {
+                text-align: left; /* Align text to the left */
+                padding: 0 1em; /* Add padding to keep text readable */
             }
         }
     </style>
@@ -255,7 +248,7 @@
     <main>
         <div class="content">
             <div class="effect-section">
-                <h2>Global Warming111</h2>
+                <h2>Global Warming</h2>
                 <p>The Earth's average surface temperature has increased significantly, leading to more frequent and intense heat waves.</p>
             </div>
 
