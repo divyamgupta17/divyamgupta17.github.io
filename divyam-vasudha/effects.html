@@ -36,32 +36,38 @@
             transition: background-color 0.3s ease;
         }
         
+        .hamburger.active div:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+        
         .hamburger.active div:nth-child(2) {
             opacity: 0;
         }
         
-        .hamburger.active div:first-child {
-            transform: translateY(8px) rotate(45deg);
-        }
-        
-        .hamburger.active div:last-child {
+        .hamburger.active div:nth-child(3) {
             transform: translateY(-8px) rotate(-45deg);
         }
         
-        nav {
-            display: flex;
+       nav {
+            display: none; /* Initially hidden */
             justify-content: center;
             background-color: #333;
             position: absolute;
             top: 70px; /* Adjust top position based on header height */
             width: 100%;
             z-index: 1;
-            flex-direction: column;
-            display: none;
+            flex-direction: row; /* Display links in a row */
+            white-space: nowrap; /* Prevent wrapping of links */
         }
         
-        nav.active {
-            display: flex;
+        @media (min-width: 769px) {
+            nav {
+                display: flex;
+            }
+            
+            nav.active {
+                display: flex; /* Display when active */
+            }
         }
         
         nav a {
@@ -70,6 +76,9 @@
             text-decoration: none;
             text-align: center;
             transition: background-color 0.3s ease, color 0.3s ease;
+            flex: 1 1 auto; /* Flex properties to distribute evenly */
+            max-width: 200px; /* Limit maximum width of each link */
+            box-sizing: border-box; /* Ensure padding is included in width */
         }
         
         nav a:hover {
@@ -173,20 +182,20 @@
             .hamburger {
                 display: flex;
             }
-        
+            
             main {
                 flex-direction: column; /* Stack items vertically */
                 align-items: center; /* Center items horizontally */
             }
-        
+            
             .content {
                 max-width: 100%; /* Take full width of the screen */
             }
-        
+            
             .image {
                 width: 100%;
             }
-        
+            
             .image img {
                 width: 100%;
                 height: auto;
@@ -205,6 +214,7 @@
             }
             nav.active {
                 display: flex;
+                flex-direction: column;
             }
             nav a {
                 width: 100%;
@@ -245,7 +255,7 @@
     <main>
         <div class="content">
             <div class="effect-section">
-                <h2>Global Warming</h2>
+                <h2>Global Warming111</h2>
                 <p>The Earth's average surface temperature has increased significantly, leading to more frequent and intense heat waves.</p>
             </div>
 
