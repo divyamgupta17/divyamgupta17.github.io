@@ -11,7 +11,8 @@
             padding: 0;
             background-color: #f4f4f4;
         }
-       header {
+
+        header {
             background-color: #0b9e3a;
             color: white;
             padding: 1em 0;
@@ -23,6 +24,7 @@
             justify-content: center;
             background-color: #333;
         }
+
         nav a {
             color: white;
             padding: 14px 20px;
@@ -30,10 +32,12 @@
             text-align: center;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
+
         nav a:hover {
             background-color: #ddd;
             color: black;
         }
+
         main {
             display: flex;
             flex-wrap: wrap;
@@ -41,34 +45,37 @@
             padding: 2em;
             background-color: #fff;
         }
+
         main .content {
             flex-basis: calc(50% - 2em);
             padding: 0 1em;
             line-height: 1.6;
             margin-bottom: 20px;
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
             align-items: center;
             background-color: #f9f9f9;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             animation: fadeIn 2s;
+            text-align: justify;
         }
+
         main .content img {
-            width: 200px;
-            height: 150px;
+            width: 100%;
+            max-width: 200px;
+            height: auto;
             object-fit: cover;
             border: 2px solid #0b9e3a;
             border-radius: 8px;
-            margin: 0 1em;
+            margin: 1em 0;
         }
+
         main .content p {
-            flex-basis: 50%;
             padding: 0 1em;
         }
-        main .content:nth-child(even) .image {
-            order: 1; /* Changed order for even numbered content */
-        }
+
         footer {
             background-color: #0b9e3a;
             color: white;
@@ -78,35 +85,43 @@
             width: 100%;
             bottom: 0;
         }
+
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
+
         .hamburger {
             display: none;
             flex-direction: column;
             cursor: pointer;
             margin: 1em;
         }
+
         .hamburger div {
             width: 25px;
             height: 3px;
             background-color: black;
             margin: 4px 0;
         }
+
         @media (max-width: 576px) {
             .hamburger {
                 display: flex;
             }
+
             .hamburger.active div:nth-child(1) {
                 transform: rotate(45deg) translate(5px, 6px);
             }
+
             .hamburger.active div:nth-child(2) {
                 opacity: 0;
             }
+
             .hamburger.active div:nth-child(3) {
                 transform: rotate(-45deg) translate(5px, -6px);
             }
+
             nav {
                 flex-direction: column;
                 display: none;
@@ -117,19 +132,37 @@
                 background-color: #333;
                 z-index: 1000;
             }
+
             nav.active {
                 display: flex;
             }
+
             nav.active a {
                 width: 100%;
                 text-align: center;
             }
-            main .content {
-                flex-direction: column-reverse; /* Change flex direction for mobile */
-                text-align: center; /* Center-align content */
+
+            main {
+                padding: 1em;
             }
+
+            main .content {
+                flex-basis: 100%;
+                flex-direction: column;
+                text-align: justify;
+                margin: 0.5em 0;
+            }
+
             main .content img {
-                margin: 1em 0; /* Adjust margin for image */
+                width: 100%;
+                max-width: none;
+                height: auto;
+                margin: 1em 0;
+            }
+
+            footer {
+                position: static;
+                padding: 1em 0;
             }
         }
     </style>
