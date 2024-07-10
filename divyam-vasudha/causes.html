@@ -18,7 +18,6 @@
             padding: 1em 0;
             text-align: center;
         }
-
         nav {
             display: flex;
             justify-content: center;
@@ -65,6 +64,7 @@
         main .content .text {
             flex: 1;
             padding: 0 1em; /* Padding around text */
+            text-align: justify; /* Justify text */
         }
         footer {
             background-color: #0b9e3a; /* Green background color */
@@ -146,6 +146,9 @@
                 margin: 0 auto 1em; /* Center-align image */
                 display: block; /* Ensure block display for margin to work */
             }
+            main .content .text {
+                text-align: justify; /* Ensure justified text on mobile */
+            }
         }
 
         /* Back to Top Button */
@@ -177,7 +180,7 @@
         <div></div>
     </div>
     <nav id="nav">
-         <a href="index.html">Home</a>
+        <a href="index.html">Home</a>
         <a href="climate_change.html">Climate Change</a>
         <a href="causes.html">Causes</a>
         <a href="effects.html">Effects</a>
@@ -185,7 +188,6 @@
         <a href="facts.html">Facts</a>
         <a href="climateSurvey.html">Survey</a>
         <a href="calculator.html">Calculator</a>
-
     </nav>
     <main>
         <div class="content">
@@ -195,7 +197,6 @@
                 <p>The burning of fossil fuels (coal, oil, and natural gas) for energy and transportation is the largest source of greenhouse gases. These gases trap heat in the Earth's atmosphere, leading to the greenhouse effect.</p>
             </div>
         </div>
-
         <div class="content">
             <img src="climate_cause3.jpg" alt="Deforestation">
             <div class="text">
@@ -203,7 +204,6 @@
                 <p>Trees absorb CO2, and deforestation reduces this capacity, leading to higher CO2 levels in the atmosphere.</p>
             </div>
         </div>
-
         <div class="content">
             <img src="climate_cause4.jpg" alt="Industrial Processes">
             <div class="text">
@@ -211,7 +211,6 @@
                 <p>Various industrial activities emit greenhouse gases and other pollutants that contribute to climate change.</p>
             </div>
         </div>
-
         <div class="content">
             <img src="climate_cause5.jpg" alt="Agricultural Practices">
             <div class="text">
@@ -219,7 +218,6 @@
                 <p>Agricultural practices, including livestock farming, release significant amounts of methane and nitrous oxide.</p>
             </div>
         </div>
-
         <div class="content">
             <img src="climate_cause6.jpg" alt="Waste Management">
             <div class="text">
@@ -231,10 +229,8 @@
     <footer>
         &copy; 2024 Environmental and Sustainability. All rights reserved.
     </footer>
-
     <!-- Back to Top Button -->
     <button onclick="scrollToTop()" class="back-to-top" id="back-to-top-btn">&#8679; Top</button>
-
     <script>
         // Scroll to Top Function
         function scrollToTop() {
