@@ -178,17 +178,18 @@
                 <option value="vehicle">Vehicle Consumption</option>
                 <option value="waste">Waste Consumption</option>
                 <option value="planting">Tree Planting</option>
+                <option value="recycling">Recycling</option>
             </select>
 
             <div id="vehicleInputs">
                 <label for="distance">Distance Traveled (km per day):</label>
-                <input type="number" id="distance" name="distance">
+                <input type="number" id="distance" name="distance" min="0" required>
 
                 <label for="fuel">Fuel Efficiency (km per liter):</label>
-                <input type="number" id="fuel" name="fuel">
+                <input type="number" id="fuel" name="fuel" min="0" required>
 
                 <label for="fuelType">Fuel Type:</label>
-                <select id="fuelType" name="fuelType">
+                <select id="fuelType" name="fuelType" required>
                     <option value="petrol">Petrol</option>
                     <option value="diesel">Diesel</option>
                     <option value="electric">Electric</option>
@@ -197,15 +198,41 @@
 
             <div id="wasteInputs" style="display:none;">
                 <label for="wasteAmount">Waste Amount (kg per day):</label>
-                <input type="number" id="wasteAmount" name="wasteAmount">
+                <input type="number" id="wasteAmount" name="wasteAmount" min="0" required>
             </div>
 
             <div id="plantingInputs" style="display:none;">
                 <label for="treesPlanted">Number of Trees Planted:</label>
-                <input type="number" id="treesPlanted" name="treesPlanted">
+                <input type="number" id="treesPlanted" name="treesPlanted" min="0" required>
                 
                 <label for="co2Absorption">Average CO2 Absorption per Tree (kg per year):</label>
-                <input type="number" id="co2Absorption" name="co2Absorption" value="21">
+                <input type="number" id="co2Absorption" name="co2Absorption" value="21" min="0" required>
+            </div>
+
+            <div id="recyclingInputs" style="display:none;">
+                <label for="recyclingType">Type of Recycling:</label>
+                <select id="recyclingType" name="recyclingType" onchange="toggleRecyclingOptions()">
+                    <option value="paper">Paper</option>
+                    <option value="plastic">Plastic</option>
+                    <option value="glass">Glass</option>
+                    <option value="metal">Metal</option>
+                    <option value="others">Others</option>
+                </select>
+
+                <div id="recyclingPaper" style="display:none;">
+                    <label for="recyclingAmountPaper">Amount Recycled (kg per day - Paper):</label>
+                    <input type="number" id="recyclingAmountPaper" name="recyclingAmountPaper" min="0" required>
+                </div>
+
+                <div id="recyclingPlastic" style="display:none;">
+                    <label for="recyclingAmountPlastic">Amount Recycled (kg per day - Plastic):</label>
+                    <input type="number" id="recyclingAmountPlastic" name="recyclingAmountPlastic" min="0" required>
+                </div>
+
+                <div id="recyclingOthers" style="display:none;">
+                    <label for="recyclingAmountOthers">Amount Recycled (kg per day - Others):</label>
+                    <input type="number" id="recyclingAmountOthers" name="recyclingAmountOthers" min="0" required>
+                </div>
             </div>
 
             <button type="button" onclick="calculateCarbon()">Calculate</button>
@@ -224,8 +251,23 @@
             document.getElementById('vehicleInputs').style.display = type === 'vehicle' ? 'block' : 'none';
             document.getElementById('wasteInputs').style.display = type === 'waste' ? 'block' : 'none';
             document.getElementById('plantingInputs').style.display = type === 'planting' ? 'block' : 'none';
+            document.getElementById('recyclingInputs').style.display = type === 'recycling' ? 'block' : 'none';
 
+            toggleRecyclingOptions();
             clearInputs();
+        }
+
+        function toggleRecyclingOptions() {
+            const recyclingType = document.getElementById('recyclingType').value;
+
+            document.getElementById('recyclingPaper').style.display = recyclingType === 'paper' ? 'block' : 'none';
+            document.getElementById('recyclingAmountPaper').required = recyclingType === 'paper';
+
+            document.getElementById('recyclingPlastic').style.display = recyclingType === 'plastic' ? 'block' : 'none';
+            document.getElementById('recyclingAmountPlastic').required = recyclingType === 'plastic';
+
+            document.getElementById('recyclingOthers').style.display = recyclingType === 'others' ? 'block' : 'none';
+            document.getElementById('recyclingAmountOthers').required = recyclingType === 'others';
         }
 
         function clearInputs() {
@@ -235,6 +277,9 @@
             document.getElementById('wasteAmount').value = '';
             document.getElementById('treesPlanted').value = '';
             document.getElementById('co2Absorption').value = '21';
+            document.getElementById('recyclingAmountPaper').value = '';
+            document.getElementById('recyclingAmountPlastic').value = '';
+            document.getElementById('recyclingAmountOthers').value = '';
         }
 
         function calculateCarbon() {
@@ -286,6 +331,37 @@
                 totalCarbon = treesPlanted * (co2Absorption / 365);
 
                 document.getElementById('result').innerHTML = `Your daily CO2 absorption from planting trees is approximately <strong>${totalCarbon.toFixed(2)} kg CO2</strong>.`;
+                document.getElementById('savings').innerHTML = '';
+
+            } else if (type === 'recycling') {
+                const recyclingType = document.getElementById('recyclingType').value;
+                let recyclingAmount = 0;
+
+                switch (recyclingType) {
+                    case 'paper':
+                        recyclingAmount = parseFloat(document.getElementById('recyclingAmountPaper').value);
+                        break;
+                    case 'plastic':
+                        recyclingAmount = parseFloat(document.getElementById('recyclingAmountPlastic').value);
+                        break;
+                    case 'others':
+                        recyclingAmount = parseFloat(document.getElementById('recyclingAmountOthers').value);
+                        break;
+                    default:
+                        break;
+                }
+
+                const recyclingFactors = {
+                    paper: 0.2,
+                    plastic: 0.15,
+                    glass: 0.1,
+                    metal: 0.3,
+                    others: 0.25
+                };
+
+                totalCarbon = recyclingAmount * recyclingFactors[recyclingType];
+
+                document.getElementById('result').innerHTML = `Your daily CO2 emissions savings from recycling ${recyclingType} is approximately <strong>${totalCarbon.toFixed(2)} kg CO2</strong>.`;
                 document.getElementById('savings').innerHTML = '';
             }
         }
