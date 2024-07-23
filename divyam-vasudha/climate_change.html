@@ -45,33 +45,32 @@
             background-color: #fff;
         }
         main .content {
-            flex-basis: calc(50% - 2em);
+            flex: 1 1 calc(50% - 2em);
             padding: 1em;
             line-height: 1.6;
             margin-bottom: 20px;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
             background-color: #f9f9f9;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             animation: fadeIn 2s;
-            text-align: justify;
+            text-align: justify; /* Justified text alignment */
         }
         main .content img {
-            width: 200px;
-            height: 150px;
+            width: 100%;
+            max-width: 200px;
+            height: auto;
             object-fit: cover;
             border: 2px solid #0b9e3a;
             border-radius: 8px;
-            margin: 0 1em;
+            margin: 1em 0;
         }
         main .content p {
-            flex-basis: 50%;
+            width: 100%;
             padding: 0 1em;
-        }
-        main .content:nth-child(even) .image {
-            order: 1; /* Changed order for even numbered content */
+            text-align: justify; /* Ensure text is justified within paragraphs */
         }
 
         footer {
@@ -132,11 +131,17 @@
                 width: 100%;
                 text-align: center;
             }
+            main {
+                padding: 1em; /* Adjust padding for mobile */
+            }
             main .content {
-                flex-direction: column-reverse; /* Change flex direction for mobile */
-                text-align: justify; /* Center-align content */
+                flex: 1 1 100%; /* Full width for mobile */
+                flex-direction: column;
+                text-align: justify; /* Justified text alignment for mobile */
             }
             main .content img {
+                width: 100%; /* Full width image for mobile */
+                max-width: none;
                 margin: 1em 0; /* Adjust margin for image */
             }
         }
