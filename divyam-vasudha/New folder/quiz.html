@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Garden</title>
+    <link rel="stylesheet" href="quizcss.css">
+</head>
+<body>
+    <header>
+        <h1>Climate Change Quiz and Garden</h1>
+    </header>
+    <div class="hamburger" onclick="toggleNav()">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="climate_change.html">Climate Change</a>
+        <a href="causes.html">Causes</a>
+        <a href="effects.html">Effects</a>
+        <a href="solutions.html">Solutions</a>
+        <a href="facts.html">Facts</a>
+        <a href="climateSurvey.html">Survey</a>
+        <a href="calculator.html">Calculator</a>
+    </nav>
+    <div class="container">
+        <div class="quiz-container">
+            <form id="quiz-form">
+                <div id="question-container" class="question">
+                    <!-- Questions will be injected here -->
+                </div>
+                <button type="button" onclick="submitAnswer()">Next</button>
+            </form>
+            <div id="result"></div>
+            <div id="timer">Time left: 30 seconds</div>
+        </div>
+        <div class="garden-container">
+            <div id="garden" class="garden">
+                <div id="soil" class="soil"></div> <!-- Soil container -->
+                <div id="seed" class="seed"></div> <!-- Seeds container -->
+                <div id="cloud1" class="cloud cloud1"></div>
+                <div id="cloud2" class="cloud cloud2"></div>
+                <div id="cloud3" class="cloud cloud3"></div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        &copy; 2024 Climate Awareness
+    </footer>
+    <script src="quizscript.js"></script>
+</body>
+</html>

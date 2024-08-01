@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Carbon Generation Calculator</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #0b9e3a;
+            color: white;
+            padding: 1em 0;
+            text-align: center;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #333;
+            margin-bottom: 20px; /* Adjust margin for spacing */
+        }
+        nav a {
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        nav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2em;
+            background-color: #fff;
+            margin-bottom: 60px; /* Adjust margin for footer */
+        }
+        .content {
+            width: 100%;
+            max-width: 600px;
+            padding: 2em;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 2s;
+        }
+        .content label {
+            display: block;
+            margin-bottom: 0.5em;
+            font-weight: bold;
+        }
+        .content select, .content input {
+            width: 100%;
+            padding: 0.5em;
+            margin-bottom: 1em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+        .content button {
+            display: block;
+            width: 100%;
+            padding: 1em;
+            background-color: #0b9e3a;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .content button:hover {
+            background-color: #088531;
+        }
+        .result {
+            margin-top: 1em;
+            padding: 1em;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        footer {
+            background-color: #0b9e3a;
+            color: white;
+            text-align: center;
+            padding: 1em 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            margin: 1em;
+        }
+        .hamburger div {
+            width: 25px;
+            height: 3px;
+            background-color: black;
+            margin: 4px 0;
+        }
+        @media (max-width: 576px) {
+            .hamburger {
+                display: flex;
+            }
+            .hamburger.active div:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 6px);
+            }
+            .hamburger.active div:nth-child(2) {
+                opacity: 0;
+            }
+            .hamburger.active div:nth-child(3) {
+                transform: rotate(-45deg) translate(5px, -6px);
+            }
+            nav {
+                flex-direction: column;
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background-color: #333;
+                z-index: 1000;
+            }
+            nav.active {
+                display: flex;
+            }
+            nav.active a {
+                width: 100%;
+                text-align: center;
+            }
+            main .content {
+                padding: 1em; /* Adjust padding for mobile */
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Daily Carbon Generation Calculator</h1>
+        <div class="hamburger" onclick="toggleNav()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </header>
+    
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="climate_change.html">Climate Change</a>
+        <a href="causes.html">Causes</a>
+        <a href="effects.html">Effects</a>
+        <a href="solutions.html">Solutions</a>
+        <a href="facts.html">Facts</a>
+        <a href="climateSurvey.html">Survey</a>
+        <a href="calculator.html">Calculator</a>
+    </nav>
+
+    <main>
+        <div id="carbonForm" class="content">
+            <label for="type">Calculation Type:</label>
+            <select id="type" name="type" onchange="toggleInputs()" required>
+                <option value="vehicle">Vehicle Consumption</option>
+                <option value="waste">Waste Consumption</option>
+                <option value="planting">Tree Planting</option>
+                <option value="electricity">Electricity Consumption</option>
+                <option value="water">Water Usage</option>
+                <option value="publicTransport">Public Transportation</option>
+                <option value="diet">Dietary Choices</option>
+                <option value="heatingCooling">Home Heating/Cooling</option>
+                <option value="recycling">Recycling</option>
+                <option value="renewableEnergy">Renewable Energy Adoption</option>
+            </select>
+
+            <div id="vehicleInputs">
+                <label for="distance">Distance Traveled (km per day):</label>
+                <input type="number" id="distance" name="distance">
+
+                <label for="fuel">Fuel Efficiency (km per liter):</label>
+                <input type="number" id="fuel" name="fuel">
+
+                <label for="fuelType">Fuel Type:</label>
+                <select id="fuelType" name="fuelType">
+                    <option value="petrol">Petrol</option>
+                    <option value="diesel">Diesel</option>
+                    <option value="electric">Electric</option>
+                </select>
+            </div>
+
+            <div id="wasteInputs" style="display:none;">
+                <label for="wasteAmount">Waste Amount (kg per day):</label>
+                <input type="number" id="wasteAmount" name="wasteAmount">
+            </div>
+
+            <div id="plantingInputs" style="display:none;">
+                <label for="treesPlanted">Number of Trees Planted:</label>
+                <input type="number" id="treesPlanted" name="treesPlanted">
+                
+                <label for="co2Absorption">Average CO2 Absorption per Tree (kg per year):</label>
+                <input type="number" id="co2Absorption" name="co2Absorption" value="21">
+            </div>
+
+            <div id="electricityInputs" style="display:none;">
+                <label for="electricityUsage">Daily Electricity Usage (kWh):</label>
+                <input type="number" id="electricityUsage" name="electricityUsage">
+                
+                <label for="energySource">Energy Source:</label>
+                <select id="energySource" name="energySource">
+                    <option value="coal">Coal</option>
+                    <option value="naturalGas">Natural Gas</option>
+                    <option value="solar">Solar</option>
+                    <option value="wind">Wind</option>
+                </select>
+            </div>
+
+            <div id="waterInputs" style="display:none;">
+                <label for="waterUsage">Daily Water Usage (liters):</label>
+                <input type="number" id="waterUsage" name="waterUsage">
+            </div>
+
+            <div id="publicTransportInputs" style="display:none;">
+                <label for="transportDistance">Daily Distance Traveled (km):</label>
+                <input type="number" id="transportDistance" name="transportDistance">
+                
+                <label for="transportType">Type of Transport:</label>
+                <select id="transportType" name="transportType">
+                    <option value="bus">Bus</option>
+                    <option value="train">Train</option>
+                    <option value="metro">Metro</option>
+                </select>
+            </div>
+
+            <div id="dietInputs" style="display:none;">
+                <label for="dietType">Type of Diet:</label>
+                <select id="dietType" name="dietType">
+                    <option value="vegan">Vegan</option>
+                    <option value="vegetarian">Vegetarian</option>
+                    <option value="omnivore">Omnivore</option>
+                </select>
+                
+                <label for="dailyFood">Average Daily Food Consumption (kg):</label>
+                <input type="number" id="dailyFood" name="dailyFood">
+            </div>
+
+            <div id="heatingCoolingInputs" style="display:none;">
+                <label for="heatingCoolingType">Type of Heating/Cooling System:</label>
+                <select id="heatingCoolingType" name="heatingCoolingType">
+                    <option value="electric">Electric</option>
+                    <option value="naturalGas">Natural Gas</option>
+                    <option value="oil">Oil</option>
+                </select>
+                
+                <label for="usageHours">Daily Usage Hours:</label>
+                <input type="number" id="usageHours" name="usageHours">
+            </div>
+
+            <div id="recyclingInputs" style="display:none;">
+                <label for="materialType">Type of Material Recycled:</label>
+                <select id="materialType" name="materialType">
+                    <option value="paper">Paper</option>
+                    <option value="plastic">Plastic</option>
+                    <option value="glass">Glass</option>
+                    <option value="metal">Metal</option>
+                </select>
+                
+                <label for="materialAmount">Daily Amount Recycled (kg):</label>
+                <input type="number" id="materialAmount" name="materialAmount">
+            </div>
+
+            <div id="renewableEnergyInputs" style="display:none;">
+                <label for="renewableType">Type of Renewable Energy Source:</label>
+                <select id="renewableType" name="renewableType">
+                    <option value="solar">Solar</option>
+                    <option value="wind">Wind</option>
+                    <option value="hydro">Hydro</option>
+                </select>
+                
+                <label for="energyProduced">Daily Energy Produced (kWh):</label>
+                <input type="number" id="energyProduced" name="energyProduced">
+            </div>
+
+            <button type="button" onclick="calculateCarbon()">Calculate</button>
+            
+            <div id="result" class="result"></div>
+            <div id="savings" class="result"></div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Environmental Awareness Initiative</p>
+    </footer>
+
+    <script>
+        function toggleInputs() {
+            const type = document.getElementById('type').value;
+            const allInputs = document.querySelectorAll('[id$="Inputs"]');
+
+            allInputs.forEach(input => input.style.display = 'none');
+
+            if (type === 'vehicle') {
+                document.getElementById('vehicleInputs').style.display = 'block';
+            } else if (type === 'waste') {
+                document.getElementById('wasteInputs').style.display = 'block';
+            } else if (type === 'planting') {
+                document.getElementById('plantingInputs').style.display = 'block';
+            } else if (type === 'electricity') {
+                document.getElementById('electricityInputs').style.display = 'block';
+            } else if (type === 'water') {
+                document.getElementById('waterInputs').style.display = 'block';
+            } else if (type === 'publicTransport') {
+                document.getElementById('publicTransportInputs').style.display = 'block';
+            } else if (type === 'diet') {
+                document.getElementById('dietInputs').style.display = 'block';
+            } else if (type === 'heatingCooling') {
+                document.getElementById('heatingCoolingInputs').style.display = 'block';
+            } else if (type === 'recycling') {
+                document.getElementById('recyclingInputs').style.display = 'block';
+            } else if (type === 'renewableEnergy') {
+                document.getElementById('renewableEnergyInputs').style.display = 'block';
+            }
+        }
+
+        function calculateCarbon() {
+            const type = document.getElementById('type').value;
+            let totalCarbon = 0;
+            let savings = 0;
+
+            if (type === 'vehicle') {
+                const distance = parseFloat(document.getElementById('distance').value);
+                const fuel = parseFloat(document.getElementById('fuel').value);
+                const fuelType = document.getElementById('fuelType').value;
+
+                const fuelFactors = { petrol: 2.31, diesel: 2.68, electric: 0.0 };
+
+                totalCarbon = (distance / fuel) * fuelFactors[fuelType];
+
+                if (fuelType !== 'electric') {
+                    const electricCarbon = distance * fuelFactors['electric'];
+                    savings = totalCarbon - electricCarbon;
+                }
+
+                document.getElementById('result').innerHTML = `Your daily vehicle CO2 emissions generated is approximately <strong>${totalCarbon.toFixed(2)} kg CO2</strong>.`;
+
+                if (savings > 0) {
+                    document.getElementById('savings').innerHTML = `By switching to an electric vehicle, you could save approximately <strong>${savings.toFixed(2)} kg CO2</strong> per day.`;
+                } else {
+                    document.getElementById('savings').innerHTML = '';
+                }
+
+            } else if (type === 'waste') {
+                const wasteAmount = parseFloat(document.getElementById('wasteAmount').value);
+                const wasteFactor = 0.5;
+
+                totalCarbon = wasteAmount * wasteFactor;
+
+                document.getElementById('result').innerHTML = `Your daily waste CO2 emissions generated is approximately <strong>${totalCarbon.toFixed(2)} kg CO2</strong>.`;
+                document.getElementById('savings').innerHTML = '';
+
+            } else if (type === 'planting') {
+                const treesPlanted = parseFloat(document.getElementById('treesPlanted').value);
+                const co2Absorption = parseFloat(document.getElementById('co2Absorption').value);
+
+                totalCarbon = treesPlanted * (co2Absorption / 365);
+
+                document.getElementById('result').innerHTML = `Your daily CO2 absorption from planting trees is approximately <strong>${totalCarbon.toFixed(2)} kg CO2</strong>.`;
+                document.getElementById('savings').innerHTML = '';
+
+            } else if (type === 'electricity') {
+                const electricityUsage = parseFloat(document.getElementById('electricityUsage').value);
+                const energySource = document.getElementById('energySource').value;
+
+                const energyFactors = { coal: 0.94, naturalGas: 0.42, solar: 0.05, wind: 0.02 };
+
+                totalCarbon = electricityUsage * energyFactors[energySource];
+
+                document.getElementById('result').innerHTML = `Your daily electricity CO2 emissions generated is approximately <strong>${totalCarbon.toFixed(2)} kg CO2</strong>.`;
+                document.getElementById('savings').innerHTML = '';
+
+            } else if (type === 'water') {
+                const waterUsage = parseFloat(document.getElementById('waterUsage').value);
+                const waterFactor = 0.0003;
+
+                totalCarbon = waterUsage * waterFactor;
+
+                document.getElementById('result').innerHTML = `Your daily water CO2 emissions generated is approximately <strong>${totalCarbon.toFixed(2)} kg CO2</strong>.`;
+                document.getElementById('savings').innerHTML = '';
+
+            } else if (type === 'publicTransport') {
+                const transportDistance = parseFloat(document.getElementById('transportDistance').value);
+                const transportType = document.getElementById('transportType').value;
+
+                const transportFactors = { bus: 0.04, train: 0.06, metro: 0.02 };
+
+                totalCarbon = transportDistance * transportFactors[transportType];
+
+                document.getElementById('result').innerHTML = `Your daily public transportation CO2 emissions generated is approximately <strong>${totalCarbon.toFixed(2)} kg CO2</strong>.`;
+                document.getElementById('savings').innerHTML = '';
+
+            } else if (type === 'diet') {
+                const dietType = document.getElementById('dietType').value;
+                const dailyFood = parseFloat(document.getElementById('dailyFood').value);
+
+                const dietFactors = { vegan: 2.0, vegetarian: 3.0, omnivore: 5.0 };
+
+                totalCarbon = dailyFood * dietFactors[dietType];
+
+                document.getElementById('result').innerHTML = `Your daily dietary CO2 emissions generated is approximately <strong>${totalCarbon.toFixed(2)} kg CO2</strong>.`;
+                document.getElementById('savings').innerHTML = '';
+
+            } else if (type === 'heatingCooling') {
+                const heatingCoolingType = document.getElementById('heatingCoolingType').value;
+                const usageHours = parseFloat(document.getElementById('usageHours').value);
+
+                const heatingCoolingFactors = { electric: 0.2, naturalGas: 0.22, oil: 0.27 };
+
+                totalCarbon = usageHours * heatingCoolingFactors[heatingCoolingType];
+
+                document.getElementById('result').innerHTML = `Your daily home heating/cooling CO2 emissions generated is approximately <strong>${totalCarbon.toFixed(2)} kg CO2</strong>.`;
+                document.getElementById('savings').innerHTML = '';
+
+            } else if (type === 'recycling') {
+                const materialType = document.getElementById('materialType').value;
+                const materialAmount = parseFloat(document.getElementById('materialAmount').value);
+
+                const recyclingFactors = { paper: 1.0, plastic: 1.2, glass: 0.8, metal: 1.5 };
+
+                totalCarbon = materialAmount * recyclingFactors[materialType];
+
+                document.getElementById('result').innerHTML = `Your daily recycling CO2 emissions saved is approximately <strong>${totalCarbon.toFixed(2)} kg CO2</strong>.`;
+                document.getElementById('savings').innerHTML = '';
+
+            } else if (type === 'renewableEnergy') {
+                const renewableType = document.getElementById('renewableType').value;
+                const energyProduced = parseFloat(document.getElementById('energyProduced').value);
+
+                const renewableFactors = { solar: 0.05, wind: 0.02, hydro: 0.04 };
+
+                totalCarbon = energyProduced * renewableFactors[renewableType];
+
+                document.getElementById('result').innerHTML = `Your daily renewable energy CO2 savings is approximately <strong>${totalCarbon.toFixed(2)} kg CO2</strong>.`;
+                document.getElementById('savings').innerHTML = '';
+            }
+        }
+
+        function toggleNav() {
+            const nav = document.querySelector('nav');
+            nav.classList.toggle('active');
+
+            const hamburger = document.querySelector('.hamburger');
+            hamburger.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

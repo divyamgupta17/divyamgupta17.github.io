@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Tree Planting Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="container">
+        <div id="controls-container">
+            <h2>Actions</h2>
+            <select id="actionSelect">
+                <option value="plant">Plant Tree</option>
+                <option value="deforest">Deforestation</option>
+            </select>
+            <button id="executeButton">Execute Action</button>
+            <button id="clearButton">Clear Garden</button>
+            <p>Trees Planted: <span id="treeCount">0</span></p>
+            <p>Water Flow Speed: <span id="waterFlowSpeed">0</span></p>
+            <p>Rain:
+                <input type="radio" id="rainOn" name="rain" value="on"> On
+                <input type="radio" id="rainOff" name="rain" value="off" checked> Off
+            </p>
+            <p>Rain Speed:
+                <select id="rainSpeed">
+                    <option value="slow">Slow</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="fast">Fast</option>
+                </select>
+            </p>
+            <p id="message"></p>
+        </div>
+        <div id="game-container">
+            <canvas id="gameCanvas" width="800" height="600"></canvas>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

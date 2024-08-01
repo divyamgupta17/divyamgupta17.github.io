@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Sheets Responses</title>
+    <style>
+        /* Optional: Add styling for your table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Google Sheets Responses</h1>
+    <div id="responseTable"></div>
+
+    <script>
+        // Replace with your API key and spreadsheet ID
+       // var API_KEY = 'YOUR_API_KEY';
+        var SPREADSHEET_ID = '1aBgUTJQD_NRf2zqBqNApZNL-KK9IaOyACSz0LNMiHo8';
+        var SHEET_NAME = 'Form Responses 1'; // Replace with your sheet name or use sheet ID or range
+        
+        // Google Sheets API endpoint
+        var url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${SHEET_NAME}?key=${API_KEY}`;
+
+        // Fetch data from Google Sheets API
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data); // Optional: Log the fetched data
+                
+                // Construct HTML table from fetched data
+                var html = '<table>';
+                var headers = data.values[0]; // Assuming first row is header
+                html += '<tr>';
+                headers.forEach(header => {
+                    html += '<th>' + header + '</th>';
+                });
+                html += '</tr>';
+
+                // Iterate through rows (excluding header)
+                for (var i = 1; i < data.values.length; i++) {
+                    html += '<tr>';
+                    var row = data.values[i];
+                    row.forEach(cell => {
+                        html += '<td>' + cell + '</td>';
+                    });
+                    html += '</tr>';
+                }
+
+                html += '</table>';
+
+                // Display the HTML table
+                document.getElementById('responseTable').innerHTML = html;
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    </script>
+</body>
+</html>

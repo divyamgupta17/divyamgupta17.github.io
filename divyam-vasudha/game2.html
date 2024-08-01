@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco Defender</title>
+    <style>
+        body { text-align: center; background-color: #e0f7fa; margin: 0; overflow: hidden; }
+        canvas { 
+            display: block; 
+            margin: 20px auto 0 auto; /* Add space at the top */
+            background: #ffffff; 
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #0b9e3a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0a8e2e;
+        }
+        #player-name-container, #gender-selection-container {
+            display: none;
+            margin-top: 20px;
+        }
+        #player-name, #gender-select {
+            padding: 10px;
+            font-size: 18px;
+            border: 2px solid #0b9e3a;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="player-name-container">
+        <label for="player-name">Enter your name:</label>
+        <input type="text" id="player-name" placeholder="Your Name">
+        <button id="submit-name">Submit Name</button>
+    </div>
+    <div id="gender-selection-container">
+        <label for="gender-select">Select your gender:</label>
+        <select id="gender-select">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select>
+        <button id="select-gender">Select Gender</button>
+    </div>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <button id="start-button">Start Game</button>
+    <button id="stop-button" style="display:none;">Stop Game</button>
+    <button id="restart-button" style="display:none;">Restart Game</button>
+    <script src="game.js"></script>
+</body>
+</html>

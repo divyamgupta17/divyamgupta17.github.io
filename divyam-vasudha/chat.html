@@ -15,60 +15,23 @@
         header {
             background-color: #0b9e3a;
             color: white;
-            padding: 1em;
+            padding: 1em 0;
             text-align: center;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-sizing: border-box;
-            flex-wrap: wrap; /* Ensure content wraps on small screens */
-        }
-        .header-title {
-            flex: 1;
-        }
-        .aqi-info {
-            background: #0b9e3a; /* Same color as the header */
-            color: white;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-            padding: 10px;
-            max-width: 250px;
-            text-align: center;
-            height: auto; /* Allow height to adjust automatically */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            opacity: 0; /* Start hidden for animation */
-            animation: fadeIn 2s forwards; /* Animation for the AQI container */
-        }
-        .aqi-info h2 {
-            margin: 0;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center; /* Center align the text and AQI value */
-        }
-        .aqi-info .aqi-value {
-            font-size: 24px;
-            font-weight: bold;
-            margin-left: 10px;
-        }
-        .aqi-info p {
-            font-size: 12px;
-            margin: 5px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         nav {
             display: flex;
             justify-content: center;
             background-color: #333;
             flex-wrap: wrap;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         nav a {
             color: white;
             padding: 14px 20px;
             text-decoration: none;
             text-align: center;
+            transition: background-color 0.3s, color 0.3s;
         }
         nav a:hover {
             background-color: #ddd;
@@ -80,6 +43,7 @@
             height: 300px;
             overflow: hidden;
             background-color: #ddd;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         .carousel {
             display: flex;
@@ -95,31 +59,32 @@
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
         }
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
         main {
             padding: 1em;
             font-size: 18px; /* Adjust font size as needed */
+        }
+        .content {
+            background-color: #fff;
+            padding: 1em;
+            margin-bottom: 1em;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
         }
         footer {
             background-color: #0b9e3a;
             color: white;
             text-align: center;
             padding: 1em 0;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
         }
+
+        /* Content Animation */
         .content {
             opacity: 0;
             transform: translateY(20px);
             animation: fadeInUp 1s forwards;
         }
+
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -130,6 +95,8 @@
                 transform: translateY(0);
             }
         }
+
+        /* Media Queries for Responsive Design */
         @media (max-width: 1200px) {
             .carousel img {
                 width: 80%;
@@ -151,7 +118,7 @@
         @media (max-width: 576px) {
             nav {
                 flex-direction: column;
-                display: none; /* Hide nav by default on small screens */
+                display: none;
             }
             .carousel-container {
                 height: 200px;
@@ -163,31 +130,6 @@
                 padding: 0.5em;
                 font-size: 16px;
             }
-            .header-title {
-                text-align: center;
-                flex: 1;
-            }
-            .aqi-info {
-                max-width: 90%; /* Adjust width to fit mobile view */
-                margin: 0 auto; /* Center align on mobile */
-                font-size: 14px; /* Adjust font size for readability on mobile */
-            }
-            .aqi-info h2 {
-                font-size: 14px; /* Adjust font size for readability on mobile */
-            }
-            .aqi-info .aqi-value {
-                font-size: 18px; /* Adjust font size for readability on mobile */
-                margin-left: 5px;
-            }
-            /* Hide location on small screens */
-            .aqi-info p#location {
-                display: none;
-            }
-        }
-        @media (min-width: 577px) {
-            .aqi-info p#location {
-                display: block;
-            }
         }
         @media (max-width: 400px) {
             .carousel img {
@@ -198,6 +140,8 @@
                 font-size: 14px;
             }
         }
+
+        /* Hamburger Menu */
         .hamburger {
             display: none;
             flex-direction: column;
@@ -219,13 +163,7 @@
 </head>
 <body>
     <header>
-        <div class="header-title">
-            <h1>ENVIRONMENT AND SUSTAINABILITY</h1>
-        </div>
-        <div class="aqi-info" id="aqi-container">
-            <h2>Current AQI<span id="aqi-value" class="aqi-value">Loading...</span></h2>
-            <p id="location">Fetching location...</p>
-        </div>
+        <h1>ENVIRONMENT AND SUSTAINABILITY</h1>
     </header>
     <div class="hamburger" onclick="toggleNav()">
         <div></div>
@@ -260,8 +198,16 @@
         <div class="content">
             <h2>Welcome</h2>
             <p>The environment encompasses all living and non-living things occurring naturally on Earth. It is a complex and dynamic system that includes air, water, land, plants, and animals. The delicate balance of these elements supports life on our planet. However, human activities have increasingly disrupted this balance, leading to significant environmental challenges.</p>
+
             <p>Sustainability refers to meeting our present needs without compromising the ability of future generations to meet theirs. It emphasizes the responsible management of resources to ensure long-term ecological health and stability. Achieving sustainability involves a harmonious relationship between economic growth, environmental protection, and social well-being.</p>
+
             <p>One of the most pressing environmental issues is climate change, driven by the accumulation of greenhouse gases like carbon dioxide in the atmosphere. These gases trap heat, leading to global warming and altering weather patterns. The consequences are severe: rising sea levels, more frequent and intense natural disasters, loss of biodiversity, and adverse impacts on agriculture and human health.</p>
+        </div>
+
+        <div id="aqi-container" class="content">
+            <h2>Current Location AQI</h2>
+            <p id="location">Fetching location...</p>
+            <p id="aqi-value">Loading...</p>
         </div>
     </main>
     <footer>
@@ -284,16 +230,16 @@
 
                 if (data && data.data) {
                     const aqi = data.data.aqi;
-                    const cityName = data.data.city.name || 'Unknown City';
+                    const status = data.data.dominentpol || 'Not Available';
 
                     document.getElementById('aqi-value').textContent = aqi !== undefined ? aqi : 'Data Not Available';
-                    document.getElementById('location').textContent = `Location: ${cityName}`;
+                    document.getElementById('location').textContent = data.data.city.name;
                 } else {
+                    console.error('Unexpected API response structure:', data);
                     document.getElementById('aqi-value').textContent = 'Data Not Available';
                 }
             } catch (error) {
                 console.error('Error fetching AQI data:', error);
-                document.getElementById('location').textContent = 'Location: Error';
                 document.getElementById('aqi-value').textContent = 'Error';
             }
         }
