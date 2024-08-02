@@ -64,20 +64,21 @@ function submitAnswer() {
                 sprinkleSeeds(); // Sprinkle seeds
                 break;
             case 2:
-                showCloudsAndSun(); // Show clouds and sun
+                showRain(); // Show rain effect
                 break;
             case 3:
-                showGermination(); // Show seed germination
+                 brightenSun(); // Show seed germination
                 break;
             case 4:
+ growPlantOnSoil();
                 // Add specific effects for this question if needed
                 break;
             case 5:
-                brightenSun(); // Brighten the sun
-                growPlant(); // Grow plant
+                // Brighten the sun
+                addFences(); // Grow plant
                 break;
             case 6:
-                addFences(); // Add fences
+                 // Add fences
                 break;
             case 7:
                 showRain(); // Show rain
@@ -103,7 +104,6 @@ function submitAnswer() {
 }
 
 function sprinkleSeeds() {
-    const seedContainer = document.getElementById('seed');
     seedContainer.style.display = 'block'; // Show seeds container
     
     const soil = seedContainer.getBoundingClientRect();
@@ -132,9 +132,87 @@ function sprinkleSeeds() {
         seedContainer.style.display = 'none'; // Hide seeds container
     }, 2000); // Duration of the animation (same as CSS animation duration)
 }
-function showCloudsAndSun() {
-    cloudContainers.forEach(cloud => cloud.style.display = 'block');
-    sunContainer.style.display = 'block';
+
+function showRain() {
+    rainContainer.innerHTML = ''; // Clear any existing rain drops
+
+    for (let i = 0; i < 20; i++) { // Fewer drops
+        const rainDrop = document.createElement('div');
+        rainDrop.classList.add('rain-drop');
+        rainDrop.style.left = `${Math.random() * 100}%`;
+        rainDrop.style.animationDuration = `${Math.random() * 0.5 + 0.5}s`; // Randomize fall speed
+        rainContainer.appendChild(rainDrop);
+    }
+
+    rainContainer.style.display = 'block';
+
+    setTimeout(() => {
+        rainContainer.style.display = 'none'; // Hide rain effect after a few seconds
+        // Show the small plant
+    }, 3000); // Duration of the rain
+}
+
+function growPlantOnSoil() {
+    const soilContainer = document.getElementById('soil'); // Ensure this matches your HTML ID
+    const plantsPerRow = 4; // Number of plants per row
+    const rows = 3; // Number of rows
+    const numberOfPlants = plantsPerRow * rows; // Total number of plants
+
+    // Remove existing plants if any
+    soilContainer.innerHTML = '';
+
+    const soilWidth = soilContainer.offsetWidth;
+    const soilHeight = soilContainer.offsetHeight;
+    const plantWidth = 60; // Width of the plant image
+    const plantHeight = 60; // Height of the plant image
+    const spacing = 10; // Spacing between plants
+
+    // Calculate the available space for positioning
+    const totalWidth = plantWidth * plantsPerRow + spacing * (plantsPerRow - 1);
+    const totalHeight = plantHeight * rows + spacing * (rows - 1);
+
+    const startX = (soilWidth - totalWidth) / 2; // Center horizontally
+    const startY = (soilHeight - totalHeight) / 2; // Center vertically
+
+    for (let i = 0; i < numberOfPlants; i++) {
+        const plantImage = document.createElement('img');
+        plantImage.src = 'plant.png'; // Replace with your plant image path
+        plantImage.className = 'small-plant'; // Apply CSS class for styling
+        plantImage.style.position = 'absolute'; // Ensure absolute positioning for correct placement
+        plantImage.style.opacity = '0'; // Start with the plant invisible
+
+        // Calculate row and column for positioning
+        const row = Math.floor(i / plantsPerRow);
+        const col = i % plantsPerRow;
+
+        const left = startX + col * (plantWidth + spacing);
+        const top = startY + row * (plantHeight + spacing);
+
+        plantImage.style.left = `${left}px`;
+        plantImage.style.top = `${top}px`;
+
+        // Append the plant image to the soil container
+        soilContainer.appendChild(plantImage);
+
+        // Optionally, add an animation or delay to make the plant "grow"
+        setTimeout(() => {
+            plantImage.style.opacity = '1'; // Make the plant visible
+            plantImage.style.transition = 'opacity 1s'; // Smooth fade-in effect
+        }, 500); // Delay before showing the plant
+    }
+}
+
+
+function createPlantGrid() {
+    const plantContainer = document.getElementById('plant-container');
+    const numberOfPlants = 15; // 3 rows x 5 plants per row
+
+    for (let i = 0; i < numberOfPlants; i++) {
+        const plant = document.createElement('img');
+        plant.src = 'images/plant-image.png'; // Path to your plant image
+        plant.className = 'plant'; // Apply CSS class for styling
+        plantContainer.appendChild(plant);
+    }
 }
 
 function showGermination() {
@@ -142,7 +220,8 @@ function showGermination() {
 }
 
 function brightenSun() {
-    sunContainer.style.opacity = '1'; // Brighten sun
+    const sun = document.getElementById('sun');
+    sun.style.opacity = '1'; // Make the sun visible and bright
 }
 
 function growPlant() {
@@ -150,13 +229,21 @@ function growPlant() {
 }
 
 function addFences() {
-    fenceContainer.style.display = 'block'; // Show fences
-}
+            alert("---");
+            const fenceContainer = document.getElementById('fence-container');
+            if (fenceContainer) {
+                // Set fence images
+                document.querySelector('.fence-top').style.backgroundImage = 'url("fence.jpg")';
+                document.querySelector('.fence-bottom').style.backgroundImage = 'url("fence.jpg")';
+                document.querySelector('.fence-left').style.backgroundImage = 'url("fence.jpg")';
+                document.querySelector('.fence-right').style.backgroundImage = 'url("fence.jpg")';
 
-function showRain() {
-    rainContainer.style.display = 'block'; // Show rain
-}
-
+                // Show fences
+                fenceContainer.style.display = 'block'; 
+            } else {
+                console.error('Fence container not found!');
+            }
+        }
 function growMore() {
     // Add your effect for growing more plants
 }
@@ -167,6 +254,13 @@ function sprinkleMedicine() {
 
 function growFlowers() {
     flowersContainer.style.display = 'block'; // Show flowers
+}
+
+function showNewTree() {
+    // Logic to show a new tree in the garden
+    const newTree = document.createElement('div');
+    newTree.classList.add('tree'); // Add appropriate styles for the tree
+    garden.appendChild(newTree);
 }
 
 window.onload = displayQuestion;

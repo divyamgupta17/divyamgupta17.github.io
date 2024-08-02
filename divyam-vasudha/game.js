@@ -5,9 +5,6 @@ const ctx = canvas.getContext('2d');
 const malePlayerImage = new Image();
 malePlayerImage.src = 'boy.png'; // Male player image
 
-const femalePlayerImage = new Image();
-femalePlayerImage.src = 'girl.jpg'; // Female player image
-
 const garbageImages = [
     'trash1.png', 
     'trash2.png', 
@@ -20,6 +17,9 @@ const garbageImages = [
 
 const treeImage = new Image();
 treeImage.src = 'tree.jpg'; // Ensure this path is correct
+
+const rainDropImage = new Image();
+rainDropImage.src = 'raindrop.jpg'; // Ensure this path is correct
 
 const player = {
     x: canvas.width / 2 - 25,
@@ -35,12 +35,14 @@ const player = {
 
 const trashItems = [];
 const trees = [];
+const rainDrops = []; // Initialize the rainDrops array
 
 let gameInterval;
 let trashInterval;
-let treeInterval;
+let rainDropInterval;
 let gameStarted = false;
 let trashFallSpeed = 2; // Initial speed at which trash falls
+let rainActive = false; // To check if rain is active
 
 function drawPlayer() {
     ctx.drawImage(player.image, player.x, player.y, player.width, player.height);
@@ -53,10 +55,10 @@ function drawItem(item, image) {
 function createTrash() {
     const randomIndex = Math.floor(Math.random() * garbageImages.length);
     const trash = {
-        x: Math.random() * (canvas.width - 40), // Adjusted for larger size
+        x: Math.random() * (canvas.width - 40),
         y: 0,
-        width: 40, // Increased size
-        height: 40, // Increased size
+        width: 40,
+        height: 40,
         image: garbageImages[randomIndex] // Randomly select a garbage image
     };
     trashItems.push(trash);
@@ -74,10 +76,31 @@ function createTree(count = 1) {
     }
 }
 
+function createRainDrop() {
+    const drop = {
+        x: Math.random() * canvas.width,
+        y: 0,
+        width: 10,
+        height: 30,
+        speed: 3,
+        image: rainDropImage // Use the raindrop image
+    };
+    rainDrops.push(drop);
+}
+
 function updateItems() {
+    // Update rain drops
+    for (let i = rainDrops.length - 1; i >= 0; i--) {
+        let drop = rainDrops[i];
+        drop.y += drop.speed;
+        if (drop.y > canvas.height) {
+            rainDrops.splice(i, 1); // Remove drop if it goes off screen
+        }
+    }
+
+    // Update trash items
     for (let i = trashItems.length - 1; i >= 0; i--) {
         trashItems[i].y += trashFallSpeed;
-
         if (trashItems[i].y > canvas.height) {
             trashItems.splice(i, 1);
         }
@@ -94,15 +117,33 @@ function updateItems() {
 
             // Add trees for every 5 pieces of garbage collected
             if (player.trashCollected % 5 === 0) {
-                createTree(2); // Add 2 trees
+                createTree(3); // Add 3 trees
             }
 
-            // Increase speed every multiple of 25 pieces of trash collected
-            if (player.trashCollected % 25 === 0) {
+            // Start rain and increase tree size if 20 pieces of trash collected
+            if (player.trashCollected % 20 === 0) {
+                rainActive = true;
+                createRainDrop(); // Create raindrops initially
+            }
+
+            // Increase speed every multiple of 15 pieces of trash collected
+            if (player.trashCollected % 15 === 0) {
                 trashFallSpeed += 1; // Increase trash fall speed
                 player.speed += 1; // Optionally increase player speed
             }
         }
+    }
+
+    // Increase tree size after rain stops
+    if (rainActive) {
+        for (let tree of trees) {
+            tree.width += 10; // Increase tree size
+            tree.height += 10;
+        }
+        rainActive = false; // Reset rain status
+        setTimeout(() => {
+            alert('You have unlocked a new tree!');
+        }, 1000); // Show message after 1 second
     }
 }
 
@@ -120,10 +161,20 @@ function clearCanvas() {
 
 function gameLoop() {
     clearCanvas();
+    ctx.fillStyle = 'white'; // Initial background color
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // If it started raining, change background color
+    if (rainActive) {
+        ctx.fillStyle = 'lightbrown';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
     drawPlayer();
     updateItems();
-    trashItems.forEach((item) => drawItem(item, item.image));
-    trees.forEach((tree) => drawItem(tree, treeImage));
+    rainDrops.forEach(drop => drawItem(drop, drop.image));
+    trashItems.forEach(item => drawItem(item, item.image));
+    trees.forEach(tree => drawItem(tree, treeImage));
     drawScore();
 }
 
@@ -153,6 +204,7 @@ function startGame() {
         
         gameInterval = setInterval(gameLoop, 20);
         trashInterval = setInterval(createTrash, 1000);
+        rainDropInterval = setInterval(createRainDrop, 1000); // Create raindrops periodically
     }
 }
 
@@ -161,6 +213,7 @@ function stopGame() {
         gameStarted = false;
         clearInterval(gameInterval);
         clearInterval(trashInterval);
+        clearInterval(rainDropInterval);
         document.getElementById('start-button').style.display = 'block'; // Show start button
         document.getElementById('stop-button').style.display = 'none'; // Hide stop button
         document.getElementById('restart-button').style.display = 'block'; // Show restart button
@@ -175,6 +228,7 @@ function restartGame() {
         player.trashCollected = 0;
         trashItems.length = 0;
         trees.length = 0;
+        rainDrops.length = 0; // Clear rain drops
         trashFallSpeed = 2; // Reset trash fall speed
         player.speed = 5; // Reset player speed
 
@@ -182,39 +236,31 @@ function restartGame() {
     }
 }
 
-function submitName() {
-    const nameInput = document.getElementById('player-name');
-    const playerName = nameInput.value.trim();
-    if (playerName) {
-        player.name = playerName;
-        document.getElementById('player-name-container').style.display = 'none'; // Hide the name input
-        document.getElementById('gender-selection-container').style.display = 'block'; // Show gender selection
-    } else {
-        alert('Please enter a name!');
+// Event listeners
+document.addEventListener('DOMContentLoaded', () => {
+    const startButton = document.getElementById('start-button');
+    const stopButton = document.getElementById('stop-button');
+    const restartButton = document.getElementById('restart-button');
+    const submitNameButton = document.getElementById('submit-name-button');
+    const selectGenderButton = document.getElementById('select-gender-button');
+
+    if (startButton) {
+        startButton.addEventListener('click', startGame);
     }
-}
 
-function selectGender() {
-    const genderSelect = document.getElementById('gender-select');
-    const selectedGender = genderSelect.value;
-    if (selectedGender) {
-        if (selectedGender === 'male') {
-            player.image = malePlayerImage; // Set male player image
-        } else if (selectedGender === 'female') {
-            player.image = femalePlayerImage; // Set female player image
-        }
-        document.getElementById('gender-selection-container').style.display = 'none'; // Hide gender selection
-        document.getElementById('start-button').style.display = 'block'; // Show start button
-    } else {
-        alert('Please select a gender!');
+    if (stopButton) {
+        stopButton.addEventListener('click', stopGame);
     }
-}
 
-document.getElementById('start-button').addEventListener('click', startGame);
-document.getElementById('stop-button').addEventListener('click', stopGame);
-document.getElementById('restart-button').addEventListener('click', restartGame);
-document.getElementById('submit-name').addEventListener('click', submitName);
-document.getElementById('select-gender').addEventListener('click', selectGender);
+    if (restartButton) {
+        restartButton.addEventListener('click', restartGame);
+    }
 
-// Show the name input container when the page loads
-document.getElementById('player-name-container').style.display = 'block';
+    if (submitNameButton) {
+        submitNameButton.addEventListener('click', submitName);
+    }
+
+    if (selectGenderButton) {
+        selectGenderButton.addEventListener('click', selectGender);
+    }
+});
