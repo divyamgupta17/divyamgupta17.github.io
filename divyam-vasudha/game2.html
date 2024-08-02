@@ -5,11 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eco Defender</title>
     <style>
-        body { text-align: center; background-color: #e0f7fa; margin: 0; overflow: hidden; }
-        canvas { 
-            display: block; 
-            margin: 20px auto 0 auto; /* Add space at the top */
-            background: #ffffff; 
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            text-align: justify;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background-color: #0b9e3a;
+            color: white;
+            padding: 1em 0;
+            text-align: center;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #333;
+            animation: fadeIn 1s ease;
+            flex-wrap: wrap;
+        }
+        nav a {
+            color: white;
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        nav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        main {
+            padding: 1em;
+            animation: zoomIn 1s ease;
+            text-align: center;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .controls {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
         }
         button {
             padding: 10px 20px;
@@ -25,7 +67,6 @@
             background-color: #0a8e2e;
         }
         #player-name-container, #gender-selection-container {
-            display: none;
             margin-top: 20px;
         }
         #player-name, #gender-select {
@@ -34,26 +75,194 @@
             border: 2px solid #0b9e3a;
             border-radius: 5px;
         }
+        canvas {
+            display: block;
+            margin: 20px auto;
+            background: #ffffff;
+            border: 2px solid #0b9e3a;
+            border-radius: 10px;
+        }
+        footer {
+            background-color: #0b9e3a;
+            color: white;
+            text-align: center;
+            padding: 1em 0;
+            animation: fadeInUp 1s ease;
+            position: relative;
+            width: 100%;
+            bottom: 0;
+            flex-shrink: 0;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes zoomIn {
+            from { transform: scale(0.8); }
+            to { transform: scale(1); }
+        }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            margin: 1em;
+        }
+        .hamburger div {
+            width: 25px;
+            height: 3px;
+            background-color: black;
+            margin: 4px 0;
+        }
+        @media (max-width: 576px) {
+            .hamburger {
+                display: flex;
+            }
+            .hamburger.active div:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 6px);
+            }
+            .hamburger.active div:nth-child(2) {
+                opacity: 0;
+            }
+            .hamburger.active div:nth-child(3) {
+                transform: rotate(-45deg) translate(5px, -6px);
+            }
+            nav {
+                flex-direction: column;
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background-color: #333;
+                z-index: 1000;
+            }
+            nav.active {
+                display: flex;
+            }
+            nav.active a {
+                width: 100%;
+                text-align: center;
+            }
+        }
+        .back-to-top {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #0b9e3a;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            animation: fadeIn 1s ease;
+        }
+        .back-to-top:hover {
+            background-color: #066925;
+        }
     </style>
 </head>
 <body>
-    <div id="player-name-container">
-        <label for="player-name">Enter your name:</label>
-        <input type="text" id="player-name" placeholder="Your Name">
-        <button id="submit-name">Submit Name</button>
+    <header>
+        <h1>Eco Defender</h1>
+    </header>
+    <div class="hamburger" onclick="toggleNav()">
+        <div></div>
+        <div></div>
+        <div></div>
     </div>
-    <div id="gender-selection-container">
-        <label for="gender-select">Select your gender:</label>
-        <select id="gender-select">
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-        </select>
-        <button id="select-gender">Select Gender</button>
-    </div>
-    <canvas id="gameCanvas" width="800" height="600"></canvas>
-    <button id="start-button">Start Game</button>
-    <button id="stop-button" style="display:none;">Stop Game</button>
-    <button id="restart-button" style="display:none;">Restart Game</button>
+    <nav id="nav">
+        <a href="index.html">Home</a>
+        <a href="climate_change.html">Climate Change</a>
+        <a href="causes.html">Causes</a>
+        <a href="effects.html">Effects</a>
+        <a href="solutions.html">Solutions</a>
+        <a href="facts.html">Facts</a>
+        <a href="climateSurvey.html">Survey</a>
+        <a href="calculator.html">Calculator</a>
+    </nav>
+    <main>
+        <div class="controls">
+            <button id="stop-button" style="display:none;">Stop Game</button>
+            <button id="restart-button" style="display:none;">Restart Game</button>
+        </div>
+        <div id="player-name-container">
+            <label for="player-name">Enter your name:</label>
+            <input type="text" id="player-name" placeholder="Your Name">
+            <button id="submit-name">Submit Name</button>
+        </div>
+        <div id="gender-selection-container" style="display:none;">
+            <label for="gender-select">Select your gender:</label>
+            <select id="gender-select">
+                <option value="">Select</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+            <button id="select-gender">Select Gender</button>
+        </div>
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        <div id="start-button-container" style="margin-top: 10px;">
+            <button id="start-button">Start Game</button>
+        </div>
+    </main>
+    <footer>
+        &copy; 2024 Environment and Sustainability. All rights reserved.
+    </footer>
+    <button onclick="scrollToTop()" class="back-to-top" id="back-to-top-btn">&#8679; Top</button>
     <script src="game.js"></script>
+    <script>
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        window.addEventListener('scroll', () => {
+            const backToTopBtn = document.getElementById('back-to-top-btn');
+            if (window.scrollY > 300) {
+                backToTopBtn.style.display = 'block';
+            } else {
+                backToTopBtn.style.display = 'none';
+            }
+        });
+
+        function toggleNav() {
+            const nav = document.getElementById('nav');
+            if (nav.style.display === 'flex') {
+                nav.style.display = 'none';
+            } else {
+                nav.style.display = 'flex';
+            }
+        }
+
+        const playerNameContainer = document.getElementById('player-name-container');
+        const genderSelectionContainer = document.getElementById('gender-selection-container');
+        const startButtonContainer = document.getElementById('start-button-container');
+        const playerNameInput = document.getElementById('player-name');
+        const submitNameButton = document.getElementById('submit-name');
+        const genderSelect = document.getElementById('gender-select');
+        const selectGenderButton = document.getElementById('select-gender');
+        const startButton = document.getElementById('start-button');
+
+        submitNameButton.addEventListener('click', () => {
+            if (playerNameInput.value.trim() !== '') {
+                playerNameContainer.style.display = 'none';
+                genderSelectionContainer.style.display = 'block';
+            }
+        });
+
+        selectGenderButton.addEventListener('click', () => {
+            if (genderSelect.value !== '') {
+                genderSelectionContainer.style.display = 'none';
+                startButtonContainer.style.display = 'block';
+                startButton.disabled = false;
+            }
+        });
+    </script>
 </body>
 </html>

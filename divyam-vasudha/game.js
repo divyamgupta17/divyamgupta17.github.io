@@ -6,7 +6,7 @@ const malePlayerImage = new Image();
 malePlayerImage.src = 'boy.png'; // Male player image
 
 const femalePlayerImage = new Image();
-femalePlayerImage.src = 'girl.png'; // Female player image
+femalePlayerImage.src = 'girl.jpg'; // Female player image
 
 const garbageImages = [
     'trash1.png', 
@@ -62,9 +62,8 @@ function createTrash() {
     trashItems.push(trash);
 }
 
-function createTree() {
-    // Only add a new tree if the number of trees is less than 10
-    if (trees.length < 10) {
+function createTree(count = 1) {
+    for (let i = 0; i < count; i++) {
         const tree = {
             x: Math.random() * (canvas.width - 50),
             y: Math.random() * (canvas.height - 50),
@@ -93,15 +92,15 @@ function updateItems() {
             player.score += 10;
             trashItems.splice(i, 1);
 
-            // Add a new tree for every 5 pieces of garbage collected
+            // Add trees for every 5 pieces of garbage collected
             if (player.trashCollected % 5 === 0) {
-                createTree();
+                createTree(2); // Add 2 trees
             }
 
-            // Increase speed after collecting 25 pieces of trash
-            if (player.trashCollected >= 25) {
-                trashFallSpeed = 4; // Increase fall speed
-                player.speed = 7; // Optionally increase player speed
+            // Increase speed every multiple of 25 pieces of trash collected
+            if (player.trashCollected % 25 === 0) {
+                trashFallSpeed += 1; // Increase trash fall speed
+                player.speed += 1; // Optionally increase player speed
             }
         }
     }
