@@ -470,100 +470,106 @@
         }
 
         function calculatePlasticComparison() {
-            const plasticAmount = parseFloat(document.getElementById('plasticAmount').value);
-            const resultElement = document.getElementById('comparisonResult');
-            const imageContainer = document.getElementById('imageContainer');
-            const chartContainer = document.querySelector('.chart-container');
+    const plasticAmount = parseFloat(document.getElementById('plasticAmount').value);
+    const resultElement = document.getElementById('comparisonResult');
+    const imageContainer = document.getElementById('imageContainer');
+    const chartContainer = document.querySelector('.chart-container');
 
-            if (!isNaN(plasticAmount) && plasticAmount >= 0) {
-                // Carbon emissions data (replace with real values if available)
-                const data = {
-                    'Recycled Plastic': plasticAmount * 1.5,
-                    'Virgin Plastic': plasticAmount * 2.8,
-                    'Biodegradable Plastic': plasticAmount * 1.2,
-                    'Polyethylene Terephthalate (PET)': plasticAmount * 2.5,
-                    'High-Density Polyethylene (HDPE)': plasticAmount * 2.1
-                };
+    // Define color scheme
+    const colors = {
+        'Recycled Plastic': '#0b9e3a',
+        'Virgin Plastic': '#ff5722',
+        'Biodegradable Plastic': '#8bc34a',
+        'Polyethylene Terephthalate (PET)': '#03a9f4',
+        'High-Density Polyethylene (HDPE)': '#e91e63'
+    };
 
-                const labels = Object.keys(data);
-                const values = Object.values(data);
+    if (!isNaN(plasticAmount) && plasticAmount >= 0) {
+        // Carbon emissions data (replace with real values if available)
+        const data = {
+            'Recycled Plastic': plasticAmount * 1.5,
+            'Virgin Plastic': plasticAmount * 2.8,
+            'Biodegradable Plastic': plasticAmount * 1.2,
+            'Polyethylene Terephthalate (PET)': plasticAmount * 2.5,
+            'High-Density Polyethylene (HDPE)': plasticAmount * 2.1
+        };
 
-                resultElement.innerHTML = `
-                    <p><strong>Recycled Plastic Carbon Emission:</strong> ${data['Recycled Plastic'].toFixed(2)} kg CO2e</p>
-                    <p><strong>Virgin Plastic Carbon Emission:</strong> ${data['Virgin Plastic'].toFixed(2)} kg CO2e</p>
-                    <p><strong>Biodegradable Plastic Carbon Emission:</strong> ${data['Biodegradable Plastic'].toFixed(2)} kg CO2e</p>
-                    <p><strong>Polyethylene Terephthalate (PET) Carbon Emission:</strong> ${data['Polyethylene Terephthalate (PET)'].toFixed(2)} kg CO2e</p>
-                    <p><strong>High-Density Polyethylene (HDPE) Carbon Emission:</strong> ${data['High-Density Polyethylene (HDPE)'].toFixed(2)} kg CO2e</p>
-                `;
+        const labels = Object.keys(data);
+        const values = Object.values(data);
 
-                // Hide images and show chart
-                imageContainer.style.display = 'none';
-                chartContainer.style.display = 'block';
+        // Generate the result text with matching colors
+        resultElement.innerHTML = labels.map(label => `
+            <p><strong style="color: ${colors[label]}">${label} Carbon Emission:</strong> ${data[label].toFixed(2)} kg CO2e</p>
+        `).join('');
 
-                // Generate chart
-              new Chart(document.getElementById('carbonChart'), {
-    type: 'bar',
-    data: {
-        labels: labels,
-        datasets: [{
-            label: 'Carbon Emissions (kg CO2e)',
-            data: values,
-            backgroundColor: ['#0b9e3a', '#ff5722', '#8bc34a', '#03a9f4', '#e91e63'],
-            borderColor: ['#0b9e3a', '#ff5722', '#8bc34a', '#03a9f4', '#e91e63'],
-            borderWidth: 1,
-            hoverBackgroundColor: '#f39c12', // Change color on hover
-            hoverBorderColor: '#c0392b', // Change border color on hover
-            hoverBorderWidth: 2 // Increase border width on hover
-        }]
-    },
-    options: {
-        responsive: true,
-        plugins: {
-            legend: {
-                display: true,
-                position: 'top'
+        // Hide images and show chart
+        imageContainer.style.display = 'none';
+        chartContainer.style.display = 'block';
+
+        // Generate chart
+        new Chart(document.getElementById('carbonChart'), {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Carbon Emissions (kg CO2e)',
+                    data: values,
+                    backgroundColor: labels.map(label => colors[label]), // Match chart colors
+                    borderColor: labels.map(label => colors[label]),
+                    borderWidth: 1,
+                    hoverBackgroundColor: '#f39c12', // Change color on hover
+                    hoverBorderColor: '#c0392b', // Change border color on hover
+                    hoverBorderWidth: 2 // Increase border width on hover
+                }]
             },
-            tooltip: {
-                enabled: true,
-                callbacks: {
-                    label: function(context) {
-                        let label = context.dataset.label || '';
-                        if (label) {
-                            label += ': ';
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    },
+                    tooltip: {
+                        enabled: true,
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += context.parsed.y + ' kg CO2e';
+                                }
+                                return label;
+                            }
                         }
-                        if (context.parsed.y !== null) {
-                            label += context.parsed.y + ' kg CO2e';
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return value + ' kg CO2e';
+                            }
                         }
-                        return label;
+                    }
+                },
+                animations: {
+                    tension: {
+                        duration: 1000,
+                        easing: 'easeInOutQuad',
+                        from: 1,
+                        to: 0,
+                        loop: true
                     }
                 }
             }
-        },
-        scales: {
-            y: {
-                beginAtZero: true,
-                ticks: {
-                    callback: function(value) {
-                        return value + ' kg CO2e';
-                    }
-                }
-            }
-        },
-        animations: {
-            tension: {
-                duration: 1000,
-                easing: 'easeInOutQuad',
-                from: 1,
-                to: 0,
-                loop: true
-            }
-        }
+        });
+    } else {
+        resultElement.innerHTML = `<p>Please enter a valid amount of plastic used.</p>`;
     }
-});
-            } else {
-                resultElement.innerHTML = `<p>Please enter a valid amount of plastic used.</p>`;
-            }
-        }
+}
   async function fetchAQI(lat, lon) {
             try {
                 const response = await fetch('https://api.waqi.info/feed/geo:'+lat+';'+lon+'/?token=69fb229f85828f9b84705df08fde716ef7a423a9');
