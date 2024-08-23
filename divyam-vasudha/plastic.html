@@ -342,8 +342,56 @@
             display: none;
         }
 
+.benefits {
+    padding: 1em;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    animation: fadeInUp 2s ease-out, pulse 2s infinite; /* Combined animations */
+    max-width: 800px;
+    margin: 1em auto;
+}
 
-    </style>
+.benefits h2 {
+    margin-top: 0;
+    font-size: 24px;
+    color: #0b9e3a;
+    animation: pulseText 2s infinite; /* Animation for the heading */
+}
+
+.benefits p {
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 0.5em 0;
+    padding: 0.5em;
+    background: #f9f9f9;
+    border-radius: 4px;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+}
+
+@keyframes pulseText {
+    0% {
+        color: #0b9e3a;
+    }
+    50% {
+        color: #7acc70; /* Slightly lighter color for pulse effect */
+    }
+    100% {
+        color: #0b9e3a;
+    }
+}    </style>
 </head>
 <body>
     <header>
@@ -376,13 +424,15 @@
     <main>
     <div class="main-content">
         <div class="column">
-            <div class="benefits">
-                <h2>Benefits of Using Recycled Plastic</h2>
-                <p><strong>1. Environmental Conservation:</strong> Recycled plastic helps conserve natural resources by reducing the need for raw materials and lowering the environmental impact associated with plastic production.</p>
-                <p><strong>2. Lower Carbon Footprint:</strong> Producing recycled plastic requires less energy compared to virgin plastic, which reduces greenhouse gas emissions and helps combat climate change.</p>
-                <p><strong>3. Waste Reduction:</strong> Recycling plastic reduces the amount of waste sent to landfills and prevents plastic from polluting oceans and harming marine life.</p>
-                <p><strong>4. Economic Benefits:</strong> Recycled plastic can be less expensive to produce than virgin plastic, offering economic advantages and promoting a circular economy.</p>
-            </div>
+           <div class="benefits">
+    <h2>Benefits of Using Recycled Plastic</h2>
+    <p><strong>1. Environmental Conservation:</strong> Recycled plastic reduces the need for raw materials and lessens environmental impact, preserving ecosystems and biodiversity.</p>
+    <p><strong>2. Lower Carbon Footprint:</strong> It uses less energy than virgin plastic, cutting greenhouse gas emissions and aiding in climate change mitigation.</p>
+    <p><strong>3. Waste Reduction:</strong> Recycling minimizes landfill waste and prevents plastic pollution, protecting oceans and marine life.</p>
+    <p><strong>4. Economic Benefits:</strong> Producing recycled plastic is often cheaper, which supports local industries and promotes a circular economy.</p>
+    <p><strong>5. Resource Efficiency:</strong> Reduces demand for new raw materials, conserving resources and lessening environmental extraction impacts.</p>
+    <p><strong>6. Versatility and Quality:</strong> Modern processes ensure recycled plastics are high-quality and versatile, used in diverse applications and supporting sustainable development.</p>
+</div>
 
             <h2>Plastic Comparison Calculator</h2>
             <div class="content">
@@ -451,27 +501,65 @@
                 chartContainer.style.display = 'block';
 
                 // Generate chart
-                new Chart(document.getElementById('carbonChart'), {
-                    type: 'bar',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: 'Carbon Emissions (kg CO2e)',
-                            data: values,
-                            backgroundColor: ['#0b9e3a', '#ff5722', '#8bc34a', '#03a9f4', '#e91e63'],
-                            borderColor: ['#0b9e3a', '#ff5722', '#8bc34a', '#03a9f4', '#e91e63'],
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
+              new Chart(document.getElementById('carbonChart'), {
+    type: 'bar',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Carbon Emissions (kg CO2e)',
+            data: values,
+            backgroundColor: ['#0b9e3a', '#ff5722', '#8bc34a', '#03a9f4', '#e91e63'],
+            borderColor: ['#0b9e3a', '#ff5722', '#8bc34a', '#03a9f4', '#e91e63'],
+            borderWidth: 1,
+            hoverBackgroundColor: '#f39c12', // Change color on hover
+            hoverBorderColor: '#c0392b', // Change border color on hover
+            hoverBorderWidth: 2 // Increase border width on hover
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: true,
+                position: 'top'
+            },
+            tooltip: {
+                enabled: true,
+                callbacks: {
+                    label: function(context) {
+                        let label = context.dataset.label || '';
+                        if (label) {
+                            label += ': ';
                         }
+                        if (context.parsed.y !== null) {
+                            label += context.parsed.y + ' kg CO2e';
+                        }
+                        return label;
                     }
-                });
+                }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    callback: function(value) {
+                        return value + ' kg CO2e';
+                    }
+                }
+            }
+        },
+        animations: {
+            tension: {
+                duration: 1000,
+                easing: 'easeInOutQuad',
+                from: 1,
+                to: 0,
+                loop: true
+            }
+        }
+    }
+});
             } else {
                 resultElement.innerHTML = `<p>Please enter a valid amount of plastic used.</p>`;
             }
