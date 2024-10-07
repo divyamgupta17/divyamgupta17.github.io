@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -233,13 +233,10 @@
 
         function toggleNav() {
             const nav = document.getElementById('nav');
-            const hamburger = document.querySelector('.hamburger');
-            if (nav.classList.contains('active')) {
-                nav.classList.remove('active');
-                hamburger.classList.remove('active');
+            if (nav.style.display === 'flex') {
+                nav.style.display = 'none';
             } else {
-                nav.classList.add('active');
-                hamburger.classList.add('active');
+                nav.style.display = 'flex';
             }
         }
 
@@ -265,14 +262,6 @@
                 startButtonContainer.style.display = 'block';
                 startButton.disabled = false;
             }
-        });
-
-        // Mobile touch support for the canvas (example)
-        const canvas = document.getElementById('gameCanvas');
-        canvas.addEventListener('touchstart', function(e) {
-            const touch = e.touches[0];
-            // Get touch position and handle it accordingly in the game
-            console.log(`Touch Start at ${touch.pageX}, ${touch.pageY}`);
         });
     </script>
 </body>
