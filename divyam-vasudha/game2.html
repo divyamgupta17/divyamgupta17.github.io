@@ -233,10 +233,13 @@
 
         function toggleNav() {
             const nav = document.getElementById('nav');
-            if (nav.style.display === 'flex') {
-                nav.style.display = 'none';
+            const hamburger = document.querySelector('.hamburger');
+            if (nav.classList.contains('active')) {
+                nav.classList.remove('active');
+                hamburger.classList.remove('active');
             } else {
-                nav.style.display = 'flex';
+                nav.classList.add('active');
+                hamburger.classList.add('active');
             }
         }
 
@@ -262,6 +265,14 @@
                 startButtonContainer.style.display = 'block';
                 startButton.disabled = false;
             }
+        });
+
+        // Mobile touch support for the canvas (example)
+        const canvas = document.getElementById('gameCanvas');
+        canvas.addEventListener('touchstart', function(e) {
+            const touch = e.touches[0];
+            // Get touch position and handle it accordingly in the game
+            console.log(`Touch Start at ${touch.pageX}, ${touch.pageY}`);
         });
     </script>
 </body>
